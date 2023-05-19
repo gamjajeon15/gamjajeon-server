@@ -1,0 +1,6 @@
+jwt:
+  header: Authorization
+  issuer: ${JWT_ISSUER}
+  secret-key: ${JWT_SECRET_KEY}
+  access-token-expire-seconds: ${ACCESS_TOKEN_EXPIRE_SECONDS}
+  refresh-token-expire-seconds: ${REFRESH_TOKEN_EXPIRE_SECONDS}

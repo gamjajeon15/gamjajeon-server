@@ -1,0 +1,21 @@
+spring:
+  config:
+    import: optional:file:.env[.properties]
+
+  profiles:
+    group:
+      local: local-profile
+      dev: dev-profile
+      prod: prod-profile
+
+    include:
+      - db
+
+  # 업로드 파일 크기 제한
+  servlet:
+    multipart:
+      max-file-size: 5MB
+
+server:
+  port: ${PORT}
+  shutdown: graceful

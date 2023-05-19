@@ -1,0 +1,50 @@
+spring:
+  # DB 설정
+  datasource:
+    driver-class-name: ${DRIVER_NAME}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    url: ${DB_URL}
+
+  # JPA 설정
+  jpa:
+    database: ${DATABASE}
+    generate-ddl: false
+    open-in-view: false
+    hibernate:
+      ddl-auto: ${HIBERNATE_DDL_AUTO}
+
+    properties:
+      hibernate:
+        dialect: ${HIBERNATE_DIALECT}
+        jdbc:
+          time_zone: Asia/Seoul
+
+  # Flyway 설정
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+
+--- # local
+spring:
+  config:
+    activate:
+      on-profile: local-profile
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+--- # prod
+spring:
+  config:
+    activate:
+      on-profile: dev-profile
+  jpa:
+    show-sql: false
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: false
