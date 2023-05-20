@@ -40,7 +40,7 @@ spring:
 spring:
   config:
     activate:
-      on-profile: dev-profile
+      on-profile: prod-profile
   jpa:
     show-sql: false
 
