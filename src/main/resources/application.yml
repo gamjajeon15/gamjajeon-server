@@ -2,6 +2,7 @@ spring:
   config:
     import: optional:file:.env[.properties]
 
+  # profile 설정
   profiles:
     group:
       local: local-profile

@@ -31,7 +31,7 @@ spring:
     activate:
       on-profile: local-profile
   jpa:
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         format_sql: true
