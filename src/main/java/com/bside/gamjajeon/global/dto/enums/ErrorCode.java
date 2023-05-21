@@ -9,8 +9,6 @@ import java.util.function.Predicate;
 @Getter
 @RequiredArgsConstructor
 public enum ErrorCode {
-    OK("1", ErrorCategory.NORMAL, "Ok"),
-
     // Common
     VALIDATION_ERROR("C001", ErrorCategory.CLIENT, "잘못된 입력값입니다."),
     NOT_EXIST_API("C002", ErrorCategory.CLIENT, "요청 주소가 올바르지 않습니다."),
