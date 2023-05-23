@@ -1,0 +1,36 @@
+version: '3.9'
+services:
+  db:
+    container_name: gamja-db
+    image: mysql
+    environment:
+      MYSQL_DATABASE: gamjajeon
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      TZ: Asia/Seoul
+    ports:
+      - "3306:3306"
+    restart: always
+
+  server:
+    container_name: server
+    image: pym0040/gamjajeon
+    ports:
+      - "8080:8080"
+    environment:
+      DRIVER_NAME: ${DRIVER_NAME}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_URL: ${DB_URL}
+      DATABASE: ${DATABASE}
+      HIBERNATE_DDL_AUTO: ${HIBERNATE_DDL_AUTO}
+      HIBERNATE_DIALECT: ${HIBERNATE_DIALECT}
+      PORT: ${PORT}
+      JWT_ISSUER: ${JWT_ISSUER}
+      JWT_SECRET_KEY: ${eJmpLdRjh3s5J4a47JmGL9uWZKUNTr+pSquqAWMCQ2U=}
+      ACCESS_TOKEN_EXPIRE_SECONDS: ${ACCESS_TOKEN_EXPIRE_SECONDS}
+      REFRESH_TOKEN_EXPIRE_SECONDS: ${REFRESH_TOKEN_EXPIRE_SECONDS}
+      ACTIVE_PROFILE: ${ACTIVE_PROFILE}
+    depends_on:
+      - db
