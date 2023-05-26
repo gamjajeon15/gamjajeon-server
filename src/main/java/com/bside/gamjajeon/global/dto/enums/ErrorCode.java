@@ -16,7 +16,8 @@ public enum ErrorCode {
     INTERNAL_ERROR("C004", ErrorCategory.SERVER, "서버 에러입니다."),
 
     // User
-    USER_ALREADY_EXIST("U001", ErrorCategory.CLIENT, "이미 가입된 계정입니다");
+    EMAIL_ALREADY_EXIST("U001", ErrorCategory.CLIENT, "이미 사용중인 이메일 주소입니다."),
+    ID_ALREADY_EXIST("U002", ErrorCategory.CLIENT, "이미 등록된 아이디예요.");
 
     private final String code;
     private final ErrorCategory errorCategory;

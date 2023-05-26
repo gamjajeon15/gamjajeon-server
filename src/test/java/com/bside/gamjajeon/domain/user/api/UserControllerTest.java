@@ -39,7 +39,8 @@ class UserControllerTest {
         SignupRequest signupRequest = SignupRequest.builder()
                 .email("test@test.com")
                 .username("test")
-                .password("test")
+                .password("test1234")
+                .adStatus(false)
                 .build();
 
         willDoNothing().given(userService).signup(signupRequest);

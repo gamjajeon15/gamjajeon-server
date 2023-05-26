@@ -3,7 +3,6 @@ package com.bside.gamjajeon.global.error.handler;
 import com.bside.gamjajeon.global.dto.ErrorResponse;
 import com.bside.gamjajeon.global.dto.enums.ErrorCode;
 import com.bside.gamjajeon.global.error.GeneralException;
-import com.bside.gamjajeon.domain.user.exception.UserExistException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -25,11 +24,6 @@ public class ApiExceptionHandler {
     @ExceptionHandler
     public ResponseEntity<Object> handleMethodArgumentNotValid(BindException e) {
         return getResponseEntity(ErrorCode.VALIDATION_ERROR, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler
-    public ResponseEntity<Object> userExist(UserExistException e) {
-        return getResponseEntity(e, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler

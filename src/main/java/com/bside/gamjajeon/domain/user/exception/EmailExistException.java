@@ -3,9 +3,9 @@ package com.bside.gamjajeon.domain.user.exception;
 import com.bside.gamjajeon.global.dto.enums.ErrorCode;
 import com.bside.gamjajeon.global.error.GeneralException;
 
-public class UserExistException extends GeneralException {
+public class EmailExistException extends GeneralException {
 
-    public UserExistException() {
-        super(ErrorCode.USER_ALREADY_EXIST);
+    public EmailExistException() {
+        super(ErrorCode.EMAIL_ALREADY_EXIST);
     }
 }
