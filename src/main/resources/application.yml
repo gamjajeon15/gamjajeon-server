@@ -5,9 +5,9 @@ spring:
   # profile 설정
   profiles:
     group:
-      local: local-profile
-      dev: dev-profile
-      prod: prod-profile
+      local: local
+      dev: dev
+      prod: prod
 
     include:
       - db
