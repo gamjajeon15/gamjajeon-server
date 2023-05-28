@@ -1,22 +1,18 @@
 package com.bside.gamjajeon.domain.user.dto.request;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @ToString
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class SignupRequest {
-
-    @NotBlank
-    @Email
-    private String email;
+public class LoginRequest {
 
     @NotBlank
     @Size(min = 8, max = 20)
@@ -25,7 +21,4 @@ public class SignupRequest {
     @NotBlank
     @Size(min = 2, max = 32)
     private String username;
-
-    @NotNull
-    private Boolean adStatus;
 }

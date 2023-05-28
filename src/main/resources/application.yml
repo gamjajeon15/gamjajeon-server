@@ -11,6 +11,7 @@ spring:
 
     include:
       - db
+      - security
 
   # 업로드 파일 크기 제한
   servlet:

@@ -5,6 +5,7 @@ import com.bside.gamjajeon.global.dto.enums.ErrorCode;
 import com.bside.gamjajeon.global.error.GeneralException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -22,6 +23,11 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler
+    public ResponseEntity<Object> badCredentials(BadCredentialsException e) {
+        return getResponseEntity(ErrorCode.PASSWORD_INVALID, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
     public ResponseEntity<Object> handleMethodArgumentNotValid(BindException e) {
         return getResponseEntity(ErrorCode.VALIDATION_ERROR, HttpStatus.BAD_REQUEST);
     }
@@ -31,12 +37,16 @@ public class ApiExceptionHandler {
         return getResponseEntity(ErrorCode.INTERNAL_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    private ResponseEntity<Object> getResponseEntity(ErrorCode errorCode, HttpStatus status) {
+        return ResponseEntity.status(status).body(ErrorResponse.of(errorCode));
+    }
+
     private ResponseEntity<Object> getResponseEntity(GeneralException e, HttpStatus status) {
         return ResponseEntity.status(status).body(ErrorResponse.of(e));
     }
 
-    private ResponseEntity<Object> getResponseEntity(ErrorCode errorCode, HttpStatus status) {
-        return ResponseEntity.status(status).body(ErrorResponse.of(errorCode));
+    private ResponseEntity<Object> getResponseEntity(ErrorCode errorCode, HttpStatus status, String message) {
+        return ResponseEntity.status(status).body(ErrorResponse.of(errorCode, message));
     }
 
 }

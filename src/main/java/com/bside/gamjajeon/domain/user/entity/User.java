@@ -27,7 +27,7 @@ public class User extends BaseEntity {
     private String email;
 
     @Comment("로그인할 때 사용하는 ID")
-    @Column(length = 32, nullable = false)
+    @Column(length = 32, unique = true, nullable = false)
     private String username;
 
     @Comment("사용자 비밀번호")

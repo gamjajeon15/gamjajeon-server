@@ -1,21 +1,28 @@
 package com.bside.gamjajeon.global.config;
 
+import com.bside.gamjajeon.global.security.filter.ExceptionHandlerFilter;
+import com.bside.gamjajeon.global.security.filter.InitAuthenticationFilter;
+import com.bside.gamjajeon.global.security.jwt.JwtUtil;
+import com.bside.gamjajeon.global.security.service.CustomUserDetailsService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import javax.sql.DataSource;
-
+@RequiredArgsConstructor
 @Configuration
 public class SecurityConfig {
 
     private final String[] permittedUrls = {"/v1/users", "/v1/users/login"};
+    private final JwtUtil jwtUtil;
+    private final CustomUserDetailsService userDetailsService;
+    private final ObjectMapper mapper;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -27,7 +34,11 @@ public class SecurityConfig {
 
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, permittedUrls).permitAll()
-                .anyRequest().authenticated();
+                .anyRequest().authenticated()
+
+                .and()
+                .addFilterBefore(initAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(exceptionHandlerFilter(), InitAuthenticationFilter.class);
 
         return http.build();
     }
@@ -37,8 +48,12 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public UserDetailsService userDetailsService(DataSource dataSource) {
-        return new JdbcUserDetailsManager(dataSource);
+    public InitAuthenticationFilter initAuthenticationFilter() {
+        return new InitAuthenticationFilter(userDetailsService, jwtUtil);
     }
+
+    public ExceptionHandlerFilter exceptionHandlerFilter() {
+        return new ExceptionHandlerFilter(mapper);
+    }
+
 }
