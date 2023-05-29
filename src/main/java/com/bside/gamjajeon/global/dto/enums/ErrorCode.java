@@ -16,7 +16,14 @@ public enum ErrorCode {
     INTERNAL_ERROR("C004", ErrorCategory.SERVER, "서버 에러입니다."),
 
     // User
-    USER_ALREADY_EXIST("U001", ErrorCategory.CLIENT, "이미 가입된 계정입니다");
+    EMAIL_ALREADY_EXIST("U001", ErrorCategory.CLIENT, "이미 사용중인 이메일 주소입니다."),
+    ID_ALREADY_EXIST("U002", ErrorCategory.CLIENT, "이미 등록된 아이디예요."),
+    USER_NOT_FOUND("U003", ErrorCategory.CLIENT, "존재하지 않은 계정입니다."),
+    PASSWORD_INVALID("U005", ErrorCategory.CLIENT, "잘못된 비밀번호입니다."),
+
+    // Token
+    TOKEN_INVALID("T001", ErrorCategory.CLIENT, "토큰이 유효하지 않습니다."),
+    TOKEN_EXPIRED("T002", ErrorCategory.CLIENT, "토큰이 만료되었습니다.");
 
     private final String code;
     private final ErrorCategory errorCategory;
