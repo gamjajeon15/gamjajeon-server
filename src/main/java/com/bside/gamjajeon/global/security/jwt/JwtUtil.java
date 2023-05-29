@@ -1,5 +1,6 @@
 package com.bside.gamjajeon.global.security.jwt;
 
+import com.bside.gamjajeon.global.security.model.Jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -32,17 +33,22 @@ public class JwtUtil {
         ACCESS, REFRESH
     }
 
-    public String generateToken(UserDetails userDetails, TokenType tokenType) {
+    public Jwt generateJwt(UserDetails userDetails) {
         Date now = new Date();
+        String accessToken = generateToken(userDetails, TokenType.ACCESS, now.getTime());
+        String refreshToken = generateToken(userDetails, TokenType.REFRESH, now.getTime());
+        return new Jwt(accessToken, refreshToken);
+    }
+
+    private String generateToken(UserDetails userDetails, TokenType tokenType, long nowTime) {
         int expireSeconds = tokenType.equals(TokenType.ACCESS) ? accessTokenExpireSeconds : refreshTokenExpireSeconds;
         return Jwts.builder()
                 .setClaims(Map.of("username", userDetails.getUsername()))
                 .setIssuer(issuer)
                 .signWith(Keys.hmacShaKeyFor(secretKey.getBytes()), SignatureAlgorithm.HS256)
-                .setExpiration(new Date(now.getTime() + expireSeconds))
+                .setExpiration(new Date(nowTime + expireSeconds))
                 .compact();
     }
-
 
     public boolean validateToken(String token, UserDetails userDetails) {
         String username = extractUsername(token);

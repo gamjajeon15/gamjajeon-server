@@ -3,6 +3,8 @@ package com.bside.gamjajeon.domain.user.service;
 import com.bside.gamjajeon.domain.user.dto.request.LoginRequest;
 import com.bside.gamjajeon.domain.user.dto.request.SignupRequest;
 import com.bside.gamjajeon.domain.user.dto.response.LoginResponse;
+import com.bside.gamjajeon.domain.user.dto.response.SignupResponse;
+import com.bside.gamjajeon.domain.user.entity.User;
 import com.bside.gamjajeon.domain.user.exception.EmailExistException;
 import com.bside.gamjajeon.domain.user.exception.UsernameExistException;
 import com.bside.gamjajeon.domain.user.mapper.UserMapper;
@@ -28,9 +30,10 @@ public class UserService {
     private final CustomJwtProvider provider;
 
     @Transactional
-    public void signup(SignupRequest signupRequest) {
+    public SignupResponse signup(SignupRequest signupRequest) {
         validate(signupRequest);
-        userRepository.save(userMapper.toUser(signupRequest));
+        User user = userRepository.save(userMapper.toUser(signupRequest));
+        return new SignupResponse(user.getId());
     }
 
     private void validate(SignupRequest signupRequest) {

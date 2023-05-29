@@ -31,9 +31,7 @@ public class CustomJwtProvider implements AuthenticationProvider {
         CustomUserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
         if (passwordEncoder.matches(password, userDetails.getPassword())) {
-            String accessToken = jwtUtil.generateToken(userDetails, JwtUtil.TokenType.ACCESS);
-            String refreshToken = jwtUtil.generateToken(userDetails, JwtUtil.TokenType.REFRESH);
-            Jwt jwt = new Jwt(accessToken, refreshToken);
+            Jwt jwt = jwtUtil.generateJwt(userDetails);
             JwtAuthenticationToken jwtAuthenticationToken = new JwtAuthenticationToken(jwt, null);
             jwtAuthenticationToken.setDetails(userDetails);
             SecurityContextHolder.getContext().setAuthentication(jwtAuthenticationToken);
