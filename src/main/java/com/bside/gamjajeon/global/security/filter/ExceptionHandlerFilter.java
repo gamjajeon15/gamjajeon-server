@@ -2,14 +2,11 @@ package com.bside.gamjajeon.global.security.filter;
 
 import com.bside.gamjajeon.global.dto.ErrorResponse;
 import com.bside.gamjajeon.global.dto.enums.ErrorCode;
-import com.bside.gamjajeon.global.error.GeneralException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -32,20 +29,11 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
         try {
             filterChain.doFilter(request, response);
         } catch (ExpiredJwtException e) {
-            setResponse(response, ErrorCode.TOKEN_EXPIRED);
-        } catch (GeneralException e) {
-            setResponse(response, e.getErrorCode());
-        } catch (HttpMessageNotReadableException e) {
-            setResponse(response, ErrorCode.VALIDATION_ERROR);
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter()
+                    .write(mapper.writeValueAsString(ErrorResponse.of(ErrorCode.TOKEN_EXPIRED)));
         }
     }
-
-    private void setResponse(HttpServletResponse response, ErrorCode errorCode) throws IOException {
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.setCharacterEncoding("UTF-8");
-        response.getWriter()
-                .write(mapper.writeValueAsString(ErrorResponse.of(errorCode)));
-    }
-
 }

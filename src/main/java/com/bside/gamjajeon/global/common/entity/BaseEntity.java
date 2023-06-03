@@ -29,6 +29,6 @@ public abstract class BaseEntity {
 
     @Comment("삭제 여부")
     @ColumnDefault("1")
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TINYINT(1)")
     private boolean isDeleted;
 }
