@@ -36,11 +36,11 @@ public class User extends BaseEntity {
 
     @Comment("마케팅 정보 수신 동의 여부 (0: 미동의, 1:동의)")
     @ColumnDefault("1")
-    @Column(nullable = false, columnDefinition = "TINYINT(1)")
-    private boolean adStatus;
+    @Column(nullable = false)
+    private int adStatus;
 
     @Builder
-    protected User(String email, String username, String password, boolean adStatus) {
+    protected User(String email, String username, String password, int adStatus) {
         this.email = email;
         this.username = username;
         this.password = password;
