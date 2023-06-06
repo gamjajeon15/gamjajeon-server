@@ -31,7 +31,7 @@ public class UserController {
     @PostMapping
     public ApiResponse<Object> signup(@Valid @RequestBody SignupRequest signupRequest) {
         log.info("Signup Request = " + signupRequest.toString());
-        SignupResponse signup = userService.signup(signupRequest);
+        LoginResponse signup = userService.signup(signupRequest);
         return ApiResponse.of(signup);
     }
 

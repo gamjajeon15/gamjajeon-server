@@ -3,8 +3,6 @@ package com.bside.gamjajeon.domain.user.service;
 import com.bside.gamjajeon.domain.user.dto.request.LoginRequest;
 import com.bside.gamjajeon.domain.user.dto.request.SignupRequest;
 import com.bside.gamjajeon.domain.user.dto.response.LoginResponse;
-import com.bside.gamjajeon.domain.user.dto.response.SignupResponse;
-import com.bside.gamjajeon.domain.user.entity.User;
 import com.bside.gamjajeon.domain.user.exception.EmailExistException;
 import com.bside.gamjajeon.domain.user.exception.UsernameExistException;
 import com.bside.gamjajeon.domain.user.mapper.UserMapper;
@@ -32,10 +30,10 @@ public class UserService {
     private final JwtUtil jwtUtil;
 
     @Transactional
-    public SignupResponse signup(SignupRequest signupRequest) {
+    public LoginResponse signup(SignupRequest signupRequest) {
         validate(signupRequest);
-        User user = userRepository.save(userMapper.toUser(signupRequest));
-        return new SignupResponse(user.getId());
+        userRepository.save(userMapper.toUser(signupRequest));
+        return getLoginResponse(signupRequest.getUsername(), signupRequest.getPassword());
     }
 
     private void validate(SignupRequest signupRequest) {
@@ -48,15 +46,20 @@ public class UserService {
     }
 
     public LoginResponse login(LoginRequest loginRequest) {
-        UsernamePasswordAuthenticationToken authenticationToken = getAuthenticationToken(loginRequest);
-        Authentication authenticate = provider.authenticate(authenticationToken);
+        return getLoginResponse(loginRequest.getUsername(), loginRequest.getPassword());
+    }
+
+    private LoginResponse getLoginResponse(String username, String password) {
+        Authentication authenticate = authenticateUser(username, password);
         CustomUserDetails details = (CustomUserDetails) authenticate.getDetails();
         Jwt jwt = jwtUtil.generateJwt(details);
         return new LoginResponse(jwt.getAccessToken(), jwt.getRefreshToken(), details.getId());
     }
 
-    private static UsernamePasswordAuthenticationToken getAuthenticationToken(LoginRequest loginRequest) {
-        return new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
+    private Authentication authenticateUser(String username, String password) {
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(username, password);
+        return provider.authenticate(authenticationToken);
     }
 
 }
