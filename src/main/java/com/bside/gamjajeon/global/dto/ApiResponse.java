@@ -7,18 +7,18 @@ import lombok.ToString;
 @ToString
 public class ApiResponse<T> {
 
-    private final boolean success;
+    private final boolean result;
     private final String message;
     private final T data;
 
     public ApiResponse(T data) {
-        this.success = true;
+        this.result = true;
         this.message = "";
         this.data = data;
     }
 
     public ApiResponse(T data, String message) {
-        this.success = true;
+        this.result = true;
         this.message = message;
         this.data = data;
     }
