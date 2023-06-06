@@ -3,7 +3,6 @@ package com.bside.gamjajeon.global.security.filter;
 import com.bside.gamjajeon.domain.user.exception.TokenInvalidException;
 import com.bside.gamjajeon.global.security.jwt.JwtUtil;
 import com.bside.gamjajeon.global.security.model.CustomUserDetails;
-import com.bside.gamjajeon.global.security.model.JwtAuthentication;
 import com.bside.gamjajeon.global.security.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,15 +48,14 @@ public class InitAuthenticationFilter extends OncePerRequestFilter {
             throw new TokenInvalidException();
         }
 
-        UsernamePasswordAuthenticationToken authentication = getAuthentication(token, userDetails);
+        UsernamePasswordAuthenticationToken authentication = getAuthentication(userDetails);
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request, response);
     }
 
-    private static UsernamePasswordAuthenticationToken getAuthentication(String token, CustomUserDetails userDetails) {
-        JwtAuthentication jwtAuthentication = new JwtAuthentication(token, userDetails.getId(), userDetails.getUsername());
-        return new UsernamePasswordAuthenticationToken(jwtAuthentication, null, AuthorityUtils.createAuthorityList("ROLE_USER"));
+    private static UsernamePasswordAuthenticationToken getAuthentication(CustomUserDetails userDetails) {
+        return new UsernamePasswordAuthenticationToken(userDetails, null, AuthorityUtils.createAuthorityList("ROLE_USER"));
     }
 
 }

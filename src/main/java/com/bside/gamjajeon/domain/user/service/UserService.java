@@ -9,6 +9,7 @@ import com.bside.gamjajeon.domain.user.exception.EmailExistException;
 import com.bside.gamjajeon.domain.user.exception.UsernameExistException;
 import com.bside.gamjajeon.domain.user.mapper.UserMapper;
 import com.bside.gamjajeon.domain.user.repository.UserRepository;
+import com.bside.gamjajeon.global.security.jwt.JwtUtil;
 import com.bside.gamjajeon.global.security.model.CustomUserDetails;
 import com.bside.gamjajeon.global.security.model.Jwt;
 import com.bside.gamjajeon.global.security.provider.CustomJwtProvider;
@@ -28,6 +29,7 @@ public class UserService {
     private final UserMapper userMapper;
     private final UserRepository userRepository;
     private final CustomJwtProvider provider;
+    private final JwtUtil jwtUtil;
 
     @Transactional
     public SignupResponse signup(SignupRequest signupRequest) {
@@ -48,8 +50,8 @@ public class UserService {
     public LoginResponse login(LoginRequest loginRequest) {
         UsernamePasswordAuthenticationToken authenticationToken = getAuthenticationToken(loginRequest);
         Authentication authenticate = provider.authenticate(authenticationToken);
-        Jwt jwt = (Jwt) authenticate.getPrincipal();
         CustomUserDetails details = (CustomUserDetails) authenticate.getDetails();
+        Jwt jwt = jwtUtil.generateJwt(details);
         return new LoginResponse(jwt.getAccessToken(), jwt.getRefreshToken(), details.getId());
     }
 
