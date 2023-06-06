@@ -8,11 +8,11 @@ import com.bside.gamjajeon.domain.user.dto.response.TokenResponse;
 import com.bside.gamjajeon.domain.user.service.TokenService;
 import com.bside.gamjajeon.domain.user.service.UserService;
 import com.bside.gamjajeon.global.dto.ApiResponse;
-import com.bside.gamjajeon.global.security.model.JwtAuthentication;
+import com.bside.gamjajeon.global.security.model.AuthUser;
+import com.bside.gamjajeon.global.security.model.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +31,7 @@ public class UserController {
     @PostMapping
     public ApiResponse<Object> signup(@Valid @RequestBody SignupRequest signupRequest) {
         log.info("Signup Request = " + signupRequest.toString());
-        SignupResponse signup = userService.signup(signupRequest);
+        LoginResponse signup = userService.signup(signupRequest);
         return ApiResponse.of(signup);
     }
 
@@ -41,7 +41,7 @@ public class UserController {
         LoginResponse loginResponse = userService.login(loginRequest);
         return ApiResponse.of(loginResponse);
     }
-    
+
     @PostMapping("/tokens")
     public ApiResponse<Object> token(HttpServletRequest request) {
         TokenResponse tokenResponse = tokenService.generateToken(request);
@@ -50,11 +50,9 @@ public class UserController {
 
     /**
      * TODO: 테스트 위해 추가한 API (다음 작업에서 삭제)
-     * @AuthenticationPrincipal JwtAuthentication user: 사용자 정보 얻을 때 사용
      */
     @GetMapping("/test")
-    public String test(@AuthenticationPrincipal JwtAuthentication user) {
-        log.info("User ID = " + user.getUserId() + " Username = " + user.getUsername());
+    public String test(@AuthUser CustomUserDetails user) {
         return "test";
     }
 

@@ -3,7 +3,7 @@ package com.bside.gamjajeon.global.error.handler;
 import com.bside.gamjajeon.global.dto.ErrorResponse;
 import com.bside.gamjajeon.global.dto.enums.ErrorCode;
 import com.bside.gamjajeon.global.error.GeneralException;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -12,6 +12,7 @@ import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+@Slf4j
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
@@ -41,7 +42,7 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler
     public ResponseEntity<Object> exception(Exception e) {
-        System.out.println(e.getMessage());
+        log.error("[Error]: " + e.getMessage());
         return getResponseEntity(ErrorCode.INTERNAL_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

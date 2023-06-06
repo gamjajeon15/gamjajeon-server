@@ -19,7 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityConfig {
 
-    private final String[] permittedUrls = {"/v1/users", "/v1/users/login"};
+    private static final String[] PERMITTED_URLS = {"/v1/users", "/v1/users/login"};
     private final JwtUtil jwtUtil;
     private final CustomUserDetailsService userDetailsService;
     private final ObjectMapper mapper;
@@ -33,7 +33,7 @@ public class SecurityConfig {
                 .formLogin().disable()
 
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, permittedUrls).permitAll()
+                .antMatchers(HttpMethod.POST, PERMITTED_URLS).permitAll()
                 .anyRequest().authenticated()
 
                 .and()
