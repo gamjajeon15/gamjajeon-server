@@ -19,7 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityConfig {
 
-    private static final String[] PERMITTED_URLS = {"/v1/users", "/v1/users/login"};
+    private static final String[] PERMITTED_URLS = {"/v1/users", "/v1/users/login", "/v1/users/check/username", "/v1/users/check/email"};
     private final JwtUtil jwtUtil;
     private final CustomUserDetailsService userDetailsService;
     private final ObjectMapper mapper;
