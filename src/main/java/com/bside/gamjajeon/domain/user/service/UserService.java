@@ -1,7 +1,9 @@
 package com.bside.gamjajeon.domain.user.service;
 
+import com.bside.gamjajeon.domain.user.dto.request.EmailRequest;
 import com.bside.gamjajeon.domain.user.dto.request.LoginRequest;
 import com.bside.gamjajeon.domain.user.dto.request.SignupRequest;
+import com.bside.gamjajeon.domain.user.dto.request.UsernameRequest;
 import com.bside.gamjajeon.domain.user.dto.response.LoginResponse;
 import com.bside.gamjajeon.domain.user.exception.EmailExistException;
 import com.bside.gamjajeon.domain.user.exception.UsernameExistException;
@@ -62,4 +64,16 @@ public class UserService {
         return provider.authenticate(authenticationToken);
     }
 
+    public void checkUsername(UsernameRequest usernameRequest) {
+        if (userRepository.existsByUsername(usernameRequest.getUsername())) {
+            throw new UsernameExistException();
+        }
+
+    }
+
+    public void checkEmail(EmailRequest emailRequest) {
+        if (userRepository.existsByEmail(emailRequest.getEmail())) {
+            throw new EmailExistException();
+        }
+    }
 }

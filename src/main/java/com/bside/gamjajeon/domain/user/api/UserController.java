@@ -1,9 +1,10 @@
 package com.bside.gamjajeon.domain.user.api;
 
+import com.bside.gamjajeon.domain.user.dto.request.EmailRequest;
 import com.bside.gamjajeon.domain.user.dto.request.LoginRequest;
 import com.bside.gamjajeon.domain.user.dto.request.SignupRequest;
+import com.bside.gamjajeon.domain.user.dto.request.UsernameRequest;
 import com.bside.gamjajeon.domain.user.dto.response.LoginResponse;
-import com.bside.gamjajeon.domain.user.dto.response.SignupResponse;
 import com.bside.gamjajeon.domain.user.dto.response.TokenResponse;
 import com.bside.gamjajeon.domain.user.service.TokenService;
 import com.bside.gamjajeon.domain.user.service.UserService;
@@ -30,14 +31,14 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public ApiResponse<Object> signup(@Valid @RequestBody SignupRequest signupRequest) {
-        log.info("Signup Request = " + signupRequest.toString());
+        log.debug("Signup Request = " + signupRequest.toString());
         LoginResponse signup = userService.signup(signupRequest);
         return ApiResponse.of(signup);
     }
 
     @PostMapping("/login")
     public ApiResponse<Object> login(@Valid @RequestBody LoginRequest loginRequest) {
-        log.info("Login Request = " + loginRequest.toString());
+        log.debug("Login Request = " + loginRequest.toString());
         LoginResponse loginResponse = userService.login(loginRequest);
         return ApiResponse.of(loginResponse);
     }
@@ -46,6 +47,20 @@ public class UserController {
     public ApiResponse<Object> token(HttpServletRequest request) {
         TokenResponse tokenResponse = tokenService.generateToken(request);
         return ApiResponse.of(tokenResponse);
+    }
+
+    @PostMapping("/check/username")
+    public ApiResponse<Object> checkUsername(@Valid @RequestBody UsernameRequest usernameRequest) {
+        log.debug("Username Request = " + usernameRequest.toString());
+        userService.checkUsername(usernameRequest);
+        return ApiResponse.empty();
+    }
+
+    @PostMapping("/check/email")
+    public ApiResponse<Object> checkEmail(@Valid @RequestBody EmailRequest emailRequest) {
+        log.debug("Email Request = " + emailRequest.toString());
+        userService.checkEmail(emailRequest);
+        return ApiResponse.empty();
     }
 
     /**
