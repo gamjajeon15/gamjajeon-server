@@ -1,7 +1,6 @@
 spring:
   config:
-    #    import: optional:file:.env[.properties]
-    import: optional:classpath:.env[.properties]
+    import: ${ENV_PATH}
 
   # profile 설정
   profiles:
