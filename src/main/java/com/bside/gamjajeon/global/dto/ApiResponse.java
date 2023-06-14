@@ -30,4 +30,9 @@ public class ApiResponse<T> {
     public static <T> ApiResponse<T> empty() {
         return new ApiResponse<>(null);
     }
+
+    public static <T> ApiResponse<T> of(String message) {
+        return new ApiResponse<>(null, message);
+    }
+
 }

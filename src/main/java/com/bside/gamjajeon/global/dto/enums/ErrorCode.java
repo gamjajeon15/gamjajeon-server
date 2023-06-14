@@ -10,20 +10,20 @@ import java.util.function.Predicate;
 @RequiredArgsConstructor
 public enum ErrorCode {
     // Common
-    VALIDATION_ERROR("C001", ErrorCategory.CLIENT, "잘못된 입력값입니다."),
-    NOT_EXIST_API("C002", ErrorCategory.CLIENT, "요청 주소가 올바르지 않습니다."),
-    ACCESS_DENIED("C003", ErrorCategory.CLIENT, "접근 권한이 없습니다."),
-    INTERNAL_ERROR("C004", ErrorCategory.SERVER, "서버 에러입니다."),
+    VALIDATION_ERROR("C001", ErrorCategory.CLIENT, "잘못된 입력값입니다"),
+    NOT_EXIST_API("C002", ErrorCategory.CLIENT, "요청 주소가 올바르지 않습니다"),
+    ACCESS_DENIED("C003", ErrorCategory.CLIENT, "접근 권한이 없습니다"),
+    INTERNAL_ERROR("C004", ErrorCategory.SERVER, "서버 에러입니다"),
 
     // User
-    EMAIL_ALREADY_EXIST("U001", ErrorCategory.CLIENT, "이미 사용중인 이메일 주소입니다."),
-    ID_ALREADY_EXIST("U002", ErrorCategory.CLIENT, "이미 등록된 아이디예요."),
-    USER_NOT_FOUND("U003", ErrorCategory.CLIENT, "존재하지 않은 계정입니다."),
-    PASSWORD_INVALID("U005", ErrorCategory.CLIENT, "잘못된 비밀번호입니다."),
+    EMAIL_ALREADY_EXIST("U001", ErrorCategory.CLIENT, "이미 사용 중인 이메일 주소에요"),
+    ID_ALREADY_EXIST("U002", ErrorCategory.CLIENT, "사용할 수 없는 아이디예요"),
+    USER_NOT_FOUND("U003", ErrorCategory.CLIENT, "존재하지 않는 아이디이에요"),
+    PASSWORD_INVALID("U004", ErrorCategory.CLIENT, "비밀번호가 올바르지 않아요"),
 
     // Token
-    TOKEN_INVALID("T001", ErrorCategory.CLIENT, "토큰이 유효하지 않습니다."),
-    TOKEN_EXPIRED("T002", ErrorCategory.CLIENT, "토큰이 만료되었습니다.");
+    TOKEN_INVALID("T001", ErrorCategory.CLIENT, "토큰이 유효하지 않습니다"),
+    TOKEN_EXPIRED("T002", ErrorCategory.CLIENT, "토큰이 만료되었습니다");
 
     private final String code;
     private final ErrorCategory errorCategory;

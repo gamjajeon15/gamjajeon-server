@@ -53,14 +53,14 @@ public class UserController {
     public ApiResponse<Object> checkUsername(@Valid @RequestBody UsernameRequest usernameRequest) {
         log.debug("Username Request = " + usernameRequest.toString());
         userService.checkUsername(usernameRequest);
-        return ApiResponse.empty();
+        return ApiResponse.of("사용 가능한 아이디에요");
     }
 
     @PostMapping("/check/email")
     public ApiResponse<Object> checkEmail(@Valid @RequestBody EmailRequest emailRequest) {
         log.debug("Email Request = " + emailRequest.toString());
         userService.checkEmail(emailRequest);
-        return ApiResponse.empty();
+        return ApiResponse.of("사용 가능한 이메일 주소에요");
     }
 
     /**
