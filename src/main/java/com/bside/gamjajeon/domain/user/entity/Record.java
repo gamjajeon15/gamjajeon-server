@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 
 import javax.persistence.*;
-import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -27,7 +27,7 @@ public class Record extends BaseEntity {
 
     @Comment("사용자 아이디")
     @Column(name = "user_id", nullable = false)
-    private String userId;
+    private Long userId;
 
     @Comment("포스트 내용")
     @Column(columnDefinition = "TEXT")
@@ -45,7 +45,7 @@ public class Record extends BaseEntity {
     private List<RecordHashtag> hashtagList = new ArrayList<>();
 
     @Builder
-    protected Record(String userId, String content, int moodType, Date recordDate) {
+    public Record(Long userId, String content, int moodType, Date recordDate) {
         this.userId = userId;
         this.content = content;
         this.moodType = moodType;
