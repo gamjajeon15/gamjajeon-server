@@ -29,7 +29,6 @@ public class RecordService {
 
         // 해시 태그 validation
 
-
     }
-    
+
 }
