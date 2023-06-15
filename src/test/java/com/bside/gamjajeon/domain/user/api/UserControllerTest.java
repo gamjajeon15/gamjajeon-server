@@ -1,7 +1,7 @@
 package com.bside.gamjajeon.domain.user.api;
 
 import com.bside.gamjajeon.domain.user.dto.request.SignupRequest;
-import com.bside.gamjajeon.domain.user.dto.response.SignupResponse;
+import com.bside.gamjajeon.domain.user.dto.response.LoginResponse;
 import com.bside.gamjajeon.domain.user.service.TokenService;
 import com.bside.gamjajeon.domain.user.service.UserService;
 import com.bside.gamjajeon.global.config.SecurityConfig;
@@ -64,9 +64,9 @@ class UserControllerTest {
     void testSignupSuccess() throws Exception {
         // given
         SignupRequest signupRequest = getSignupRequest();
-        SignupResponse signupResponse = new SignupResponse(1L);
+        LoginResponse loginResponse = new LoginResponse("accessToken", "refreshToken", 1L);
 
-        given(userService.signup(any())).willReturn(signupResponse);
+        given(userService.signup(any())).willReturn(loginResponse);
 
         // when & then
         mvc.perform(post("/v1/users")
@@ -74,8 +74,10 @@ class UserControllerTest {
                         .content(objectMapper.writeValueAsString(signupRequest))
                         .with(csrf()))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.result").value(true))
                 .andExpect(jsonPath("$.data.userId").value(1L))
+                .andExpect(jsonPath("$.data.accessToken").value("accessToken"))
+                .andExpect(jsonPath("$.data.refreshToken").value("refreshToken"))
                 .andExpect(jsonPath("$.message").isEmpty());
     }
 
