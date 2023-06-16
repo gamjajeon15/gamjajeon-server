@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +25,10 @@ public class RecordService {
     private final HashtagRepository hashtagRepository;
 
     @Transactional
-    public void save(RecordRequest recordRequest) {
+    public Long save(RecordRequest recordRequest) {
 
         // Hashtag 존재 여부 validation
-        if(!recordRequest.getHashtagList().isEmpty()) {
+        if(!ObjectUtils.isEmpty(recordRequest.getHashtagList())){
             List<Hashtag> hashtagList = hashtagValidationRecord(recordRequest);
 
             // Record-Hashtag 생성
@@ -41,9 +42,11 @@ public class RecordService {
             // Record 저장
             Record record = Record.createRecordWithHashtags(recordRequest.getUserId(), recordRequest.getContent(), recordRequest.getMoodType(), recordRequest.getRecordDate(), recordHashtags);
             recordRepository.save(record);
+            return record.getId();
         }else{
             Record record = Record.createRecord(recordRequest.getUserId(), recordRequest.getContent(), recordRequest.getMoodType(), recordRequest.getRecordDate());
             recordRepository.save(record);
+            return record.getId();
         }
 
     }

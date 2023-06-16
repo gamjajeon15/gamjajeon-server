@@ -3,6 +3,7 @@ package com.bside.gamjajeon.domain.user.api;
 import com.bside.gamjajeon.domain.user.dto.request.RecordRequest;
 import com.bside.gamjajeon.domain.user.dto.request.SignupRequest;
 import com.bside.gamjajeon.domain.user.dto.response.LoginResponse;
+import com.bside.gamjajeon.domain.user.dto.response.RecordResponse;
 import com.bside.gamjajeon.domain.user.service.RecordService;
 import com.bside.gamjajeon.global.dto.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,8 @@ public class RecordController {
     @PostMapping
     public ApiResponse<Object> createRecord(@Valid @RequestBody RecordRequest recordRequest) {
         log.debug("Record Create Started with = " + recordRequest.toString());
-        recordService.save(recordRequest);
-        return ApiResponse.empty();
+        Long recordId = recordService.save(recordRequest);
+        RecordResponse recordResponse = new RecordResponse(recordId);
+        return ApiResponse.of(recordResponse);
     }
 }
