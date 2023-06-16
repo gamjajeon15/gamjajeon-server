@@ -1,34 +1,67 @@
 package com.bside.gamjajeon.domain.user.service;
 
 import com.bside.gamjajeon.domain.user.dto.request.RecordRequest;
+import com.bside.gamjajeon.domain.user.entity.Hashtag;
 import com.bside.gamjajeon.domain.user.entity.Record;
+import com.bside.gamjajeon.domain.user.entity.RecordHashtag;
+import com.bside.gamjajeon.domain.user.repository.HashtagRepository;
 import com.bside.gamjajeon.domain.user.repository.RecordRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Slf4j
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
 public class RecordService {
+
     private final RecordRepository recordRepository;
+    private final HashtagRepository hashtagRepository;
 
     @Transactional
     public void save(RecordRequest recordRequest) {
 
-        Record newRecord = Record.builder()
-                .userId(recordRequest.getUserId())
-                .content(recordRequest.getContent())
-                .moodType(recordRequest.getMoodType())
-                .recordDate(recordRequest.getRecordDate())
-                .build();
+        // Hashtag 존재 여부 validation
+        if(!recordRequest.getHashtagList().isEmpty()) {
+            List<Hashtag> hashtagList = hashtagValidationRecord(recordRequest);
 
-        Long recordId = recordRepository.save(newRecord);
+            // Record-Hashtag 생성
+            List<RecordHashtag> recordHashtags = new ArrayList<RecordHashtag>();
 
-        // 해시 태그 validation
+            for (Hashtag hashtag : hashtagList) {
+                RecordHashtag recordHashtag = RecordHashtag.createRecordHashtag(hashtag);
+                recordHashtags.add(recordHashtag);
+            }
 
+            // Record 저장
+            Record record = Record.createRecordWithHashtags(recordRequest.getUserId(), recordRequest.getContent(), recordRequest.getMoodType(), recordRequest.getRecordDate(), recordHashtags);
+            recordRepository.save(record);
+        }else{
+            Record record = Record.createRecord(recordRequest.getUserId(), recordRequest.getContent(), recordRequest.getMoodType(), recordRequest.getRecordDate());
+            recordRepository.save(record);
+        }
+
+    }
+    @Transactional
+    public List<Hashtag> hashtagValidationRecord(RecordRequest recordRequest){
+
+        List<Hashtag> hashtaglist = new ArrayList<Hashtag>();
+
+        for(String keyword : recordRequest.getHashtagList()){
+            List<Hashtag> findHashtag = hashtagRepository.findHashtagByKeyword(keyword);
+            if(!findHashtag.isEmpty()){
+                hashtaglist.add(findHashtag.get(0));
+            }else{
+                Hashtag savedHashtag = hashtagRepository.createHashtag(keyword);
+                hashtaglist.add(savedHashtag);
+            }
+        }
+        return hashtaglist;
     }
 
 }

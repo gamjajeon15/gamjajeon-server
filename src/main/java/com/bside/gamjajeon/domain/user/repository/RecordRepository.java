@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 @RequiredArgsConstructor
 public class RecordRepository {
     private final EntityManager em;
+    private final HashtagRepository hashtagRepository;
 
     //save record
     public Long save(Record record) {
@@ -22,6 +23,9 @@ public class RecordRepository {
     // delete record
 
     // select one record
+    public Record findOne(Long id){
+        return em.find(Record.class, id);
+    }
 
     // select all records
 

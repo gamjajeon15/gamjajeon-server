@@ -35,5 +35,5 @@ public class RecordRequest {
 //    @JsonSerialize(using = LocalDateTimeSerializer.class)
 //    private LocalDate updatedDate;
 
-    private List<Hashtag> hashtagList;
+    private List<String> hashtagList;
 }

@@ -3,6 +3,7 @@ package com.bside.gamjajeon.domain.user.entity;
 import com.bside.gamjajeon.global.common.entity.BaseEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -14,6 +15,7 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 @Table(name = "record_hashtag")
 @Entity
+@Setter
 public class RecordHashtag extends BaseEntity {
 
     @Id
@@ -28,4 +30,10 @@ public class RecordHashtag extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hashtag_id")
     private Hashtag hashtag;
+
+    public static RecordHashtag createRecordHashtag(Hashtag hashtag){
+        RecordHashtag recordHashtag = new RecordHashtag();
+        recordHashtag.setHashtag(hashtag);
+        return recordHashtag;
+    }
 }

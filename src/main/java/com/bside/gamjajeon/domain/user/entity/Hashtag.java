@@ -24,7 +24,7 @@ public class Hashtag extends BaseEntity {
     private Long id;
 
     @Comment("해시태그 내용")
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String keyword;
 
     @Builder

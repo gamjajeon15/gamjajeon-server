@@ -1,9 +1,7 @@
 package com.bside.gamjajeon.domain.user.entity;
 
 import com.bside.gamjajeon.global.common.entity.BaseEntity;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Comment;
 
 import javax.persistence.*;
@@ -15,9 +13,10 @@ import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
 @Getter
-@NoArgsConstructor(access = PROTECTED)
+@Setter
 @Table(name = "record")
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Record extends BaseEntity {
 
     @Id
@@ -42,14 +41,33 @@ public class Record extends BaseEntity {
     private Date recordDate;
 
     @OneToMany(mappedBy = "record", cascade = CascadeType.ALL)
-    private List<RecordHashtag> hashtagList = new ArrayList<>();
+    private List<RecordHashtag> recordHashtags = new ArrayList<>();
 
-    @Builder
-    public Record(Long userId, String content, int moodType, Date recordDate) {
-        this.userId = userId;
-        this.content = content;
-        this.moodType = moodType;
-        this.recordDate = recordDate;
+    public void addRecordhashtags(RecordHashtag recordHashtag){
+        recordHashtags.add(recordHashtag);
+        recordHashtag.setRecord(this);
     }
+
+    public static Record createRecord(Long userId, String content, int moodType, Date recordDate){
+        Record record = new Record();
+        record.setUserId(userId);
+        record.setContent(content);
+        record.setMoodType(moodType);
+        record.setRecordDate(recordDate);
+        return record;
+    }
+    public static Record createRecordWithHashtags(Long userId, String content, int moodType, Date recordDate, List<RecordHashtag> hashtagList){
+        Record record = new Record();
+
+        record.setUserId(userId);
+        record.setContent(content);
+        record.setMoodType(moodType);
+        record.setRecordDate(recordDate);
+        for(RecordHashtag recordHashtag :hashtagList){
+            record.addRecordhashtags(recordHashtag);
+        }
+        return record;
+    }
+
 }
 
