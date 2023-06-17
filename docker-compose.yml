@@ -2,9 +2,9 @@ version: '3.9'
 services:
   server:
     container_name: server
-    image: pym0040/gamjajeon
+    image: pym0040/gamjajeon:0.0.1
     ports:
-      - "80:8080"
+      - "${PORT}:${PORT}"
     environment:
       DRIVER_NAME: ${DRIVER_NAME}
       DB_USERNAME: ${DB_USERNAME}
@@ -13,7 +13,6 @@ services:
       DATABASE: ${DATABASE}
       HIBERNATE_DDL_AUTO: ${HIBERNATE_DDL_AUTO}
       HIBERNATE_DIALECT: ${HIBERNATE_DIALECT}
-      PORT: ${PORT}
       JWT_ISSUER: ${JWT_ISSUER}
       JWT_SECRET_KEY: ${JWT_SECRET_KEY}
       ACCESS_TOKEN_EXPIRE_SECONDS: ${ACCESS_TOKEN_EXPIRE_SECONDS}
