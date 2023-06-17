@@ -2,10 +2,11 @@ version: '3.9'
 services:
   server:
     container_name: server
-    image: pym0040/gamjajeon:0.0.1
+    image: pym0040/gamjajeon:${VERSION}
     ports:
       - "${PORT}:${PORT}"
     environment:
+      PORT: ${PORT}
       DRIVER_NAME: ${DRIVER_NAME}
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
@@ -18,3 +19,4 @@ services:
       ACCESS_TOKEN_EXPIRE_SECONDS: ${ACCESS_TOKEN_EXPIRE_SECONDS}
       REFRESH_TOKEN_EXPIRE_SECONDS: ${REFRESH_TOKEN_EXPIRE_SECONDS}
       ACTIVE_PROFILE: ${ACTIVE_PROFILE}
+      ENV_PATH: optional:file:.env[.properties]
