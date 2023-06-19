@@ -1,4 +1,4 @@
-package com.bside.gamjajeon.domain.user.entity;
+package com.bside.gamjajeon.domain.record.entity;
 
 import com.bside.gamjajeon.global.common.entity.BaseEntity;
 import lombok.Getter;

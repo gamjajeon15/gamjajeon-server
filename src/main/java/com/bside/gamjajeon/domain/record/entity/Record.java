@@ -1,4 +1,4 @@
-package com.bside.gamjajeon.domain.user.entity;
+package com.bside.gamjajeon.domain.record.entity;
 
 import com.bside.gamjajeon.global.common.entity.BaseEntity;
 import lombok.*;
@@ -10,7 +10,6 @@ import java.util.Date;
 import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
-import static lombok.AccessLevel.PROTECTED;
 
 @Getter
 @Setter

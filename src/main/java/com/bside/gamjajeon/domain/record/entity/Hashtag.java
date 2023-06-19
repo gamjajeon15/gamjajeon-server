@@ -1,4 +1,4 @@
-package com.bside.gamjajeon.domain.user.entity;
+package com.bside.gamjajeon.domain.record.entity;
 
 import com.bside.gamjajeon.global.common.entity.BaseEntity;
 import lombok.AccessLevel;
@@ -28,7 +28,7 @@ public class Hashtag extends BaseEntity {
     private String keyword;
 
     @Builder
-    protected Hashtag(String keyword) {
+    public Hashtag(String keyword) {
         this.keyword = keyword;
     }
 }
