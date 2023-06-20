@@ -29,14 +29,14 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public ApiResponse<Object> signup(@Valid @RequestBody SignupRequest signupRequest) {
-        log.debug("Signup Request = " + signupRequest.toString());
+        log.info("Signup Request = " + signupRequest.toString());
         LoginResponse signup = userService.signup(signupRequest);
         return ApiResponse.of(signup);
     }
 
     @PostMapping("/login")
     public ApiResponse<Object> login(@Valid @RequestBody LoginRequest loginRequest) {
-        log.debug("Login Request = " + loginRequest.toString());
+        log.info("Login Request = " + loginRequest.toString());
         LoginResponse loginResponse = userService.login(loginRequest);
         return ApiResponse.of(loginResponse);
     }
@@ -49,30 +49,16 @@ public class UserController {
 
     @PostMapping("/check/username")
     public ApiResponse<Object> checkUsername(@Valid @RequestBody UsernameRequest usernameRequest) {
-        log.debug("Username Request = " + usernameRequest.toString());
+        log.info("Username Request = " + usernameRequest.toString());
         userService.checkUsername(usernameRequest);
         return ApiResponse.of("사용 가능한 아이디에요");
     }
 
     @PostMapping("/check/email")
     public ApiResponse<Object> checkEmail(@Valid @RequestBody EmailRequest emailRequest) {
-        log.debug("Email Request = " + emailRequest.toString());
+        log.info("Email Request = " + emailRequest.toString());
         userService.checkEmail(emailRequest);
         return ApiResponse.of("사용 가능한 이메일 주소에요");
     }
 
-    @PostMapping("/find/username")
-    public ApiResponse<Object> findUsername(@Valid @RequestBody EmailRequest emailRequest) {
-        log.info("Username Request = " + emailRequest.toString());
-        UsernameResponse usernameResponse = userService.findUsername(emailRequest);
-        return ApiResponse.of(usernameResponse);
-    }
-
-    @PostMapping("/reset/password")
-    public ApiResponse<Object> findUsername(@Valid @RequestBody PasswordRequest passwordRequest,
-                                            @AuthUser CustomUserDetails userDetails) {
-        log.info("Password Request = " + passwordRequest.toString());
-        userService.resetPassword(userDetails.getUser(), passwordRequest);
-        return ApiResponse.empty();
-    }
 }

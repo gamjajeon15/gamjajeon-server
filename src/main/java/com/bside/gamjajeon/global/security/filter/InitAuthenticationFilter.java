@@ -33,7 +33,6 @@ public class InitAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String header = request.getHeader(AUTH_HEADER);
-        log.debug("Header =  " + header);
 
         if (header == null || !header.startsWith(TOKEN_PREFIX)) {
             filterChain.doFilter(request, response);
