@@ -1,10 +1,37 @@
 version: '3.9'
 services:
-  server:
-    container_name: server
+  blue:
+    container_name: blue
     image: pym0040/gamjajeon:${VERSION}
     ports:
-      - "${PORT}:${PORT}"
+      - "8080:8080"
+    environment:
+      PORT: ${PORT}
+      DRIVER_NAME: ${DRIVER_NAME}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_URL: ${DB_URL}
+      DATABASE: ${DATABASE}
+      HIBERNATE_DDL_AUTO: ${HIBERNATE_DDL_AUTO}
+      HIBERNATE_DIALECT: ${HIBERNATE_DIALECT}
+      JWT_ISSUER: ${JWT_ISSUER}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      ACCESS_TOKEN_EXPIRE_SECONDS: ${ACCESS_TOKEN_EXPIRE_SECONDS}
+      REFRESH_TOKEN_EXPIRE_SECONDS: ${REFRESH_TOKEN_EXPIRE_SECONDS}
+      ACTIVE_PROFILE: ${ACTIVE_PROFILE}
+      ENV_PATH: ${ENV_PATH}
+      LOG_PATH: ${LOG_PATH}
+      INFO_LOG_FILE: ${INFO_LOG_FILE}
+      ERROR_LOG_FILE: ${ERROR_LOG_FILE}
+      HOST_LOG_PATH: ${HOST_LOG_PATH}
+    volumes:
+      - "${HOST_LOG_PATH}:${LOG_PATH}"
+
+  green:
+    container_name: green
+    image: pym0040/gamjajeon:${VERSION}
+    ports:
+      - "8081:8080"
     environment:
       PORT: ${PORT}
       DRIVER_NAME: ${DRIVER_NAME}
