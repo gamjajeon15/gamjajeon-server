@@ -23,9 +23,10 @@ services:
       LOG_PATH: ${LOG_PATH}
       INFO_LOG_FILE: ${INFO_LOG_FILE}
       ERROR_LOG_FILE: ${ERROR_LOG_FILE}
-      HOST_LOG_PATH: ${HOST_LOG_PATH}
+      HOST_PATH: ${HOST_PATH}
+      CONTAINER_PATH: ${CONTAINER_PATH}
     volumes:
-      - "${HOST_LOG_PATH}:${LOG_PATH}"
+      - "${HOST_PATH}:${CONTAINER_PATH}"
 
   green:
     container_name: green
@@ -52,4 +53,4 @@ services:
       ERROR_LOG_FILE: ${ERROR_LOG_FILE}
       HOST_LOG_PATH: ${HOST_LOG_PATH}
     volumes:
-      - "${HOST_LOG_PATH}:${LOG_PATH}"
+      - "${HOST_PATH}:${CONTAINER_PATH}"
