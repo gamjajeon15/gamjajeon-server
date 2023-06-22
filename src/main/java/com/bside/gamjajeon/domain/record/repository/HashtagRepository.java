@@ -1,10 +1,12 @@
 package com.bside.gamjajeon.domain.record.repository;
 
-import com.bside.gamjajeon.domain.record.entity.Hashtag;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.List;
+
+import com.bside.gamjajeon.domain.record.entity.Hashtag;
 
 public interface HashtagRepository extends JpaRepository<Hashtag, Long> {
-    List<Hashtag> findByKeyword(String keyword);
+	Optional<Hashtag> findByKeyword(String keyword);
 
 }
