@@ -20,6 +20,8 @@ public enum ErrorCode {
     ID_ALREADY_EXIST("U002", ErrorCategory.CLIENT, "사용할 수 없는 아이디예요"),
     USER_NOT_FOUND("U003", ErrorCategory.CLIENT, "존재하지 않는 아이디이에요"),
     PASSWORD_INVALID("U004", ErrorCategory.CLIENT, "비밀번호가 올바르지 않아요"),
+    EMAIL_NOT_FOUND("U005", ErrorCategory.CLIENT, "존재하지 않는 이메일이에요"),
+    ACCOUNT_NOT_FOUND("U006", ErrorCategory.CLIENT, "존재하지 않는 계정이에요"),
 
     // Token
     TOKEN_INVALID("T001", ErrorCategory.CLIENT, "토큰이 유효하지 않습니다"),
