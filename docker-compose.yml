@@ -2,7 +2,7 @@ version: '3.9'
 services:
   blue:
     container_name: blue
-    image: pym0040/gamjajeon:${VERSION}
+    image: gamjajeon/gamjajeon-server
     ports:
       - "8080:8080"
     environment:
@@ -19,10 +19,7 @@ services:
       ACCESS_TOKEN_EXPIRE_SECONDS: ${ACCESS_TOKEN_EXPIRE_SECONDS}
       REFRESH_TOKEN_EXPIRE_SECONDS: ${REFRESH_TOKEN_EXPIRE_SECONDS}
       ACTIVE_PROFILE: ${ACTIVE_PROFILE}
-      ENV_PATH: ${ENV_PATH}
       LOG_PATH: ${LOG_PATH}
-      INFO_LOG_FILE: ${INFO_LOG_FILE}
-      ERROR_LOG_FILE: ${ERROR_LOG_FILE}
       HOST_PATH: ${HOST_PATH}
       CONTAINER_PATH: ${CONTAINER_PATH}
     volumes:
@@ -30,7 +27,7 @@ services:
 
   green:
     container_name: green
-    image: pym0040/gamjajeon:${VERSION}
+    image: gamjajeon/gamjajeon-server
     ports:
       - "8081:8080"
     environment:
@@ -47,10 +44,7 @@ services:
       ACCESS_TOKEN_EXPIRE_SECONDS: ${ACCESS_TOKEN_EXPIRE_SECONDS}
       REFRESH_TOKEN_EXPIRE_SECONDS: ${REFRESH_TOKEN_EXPIRE_SECONDS}
       ACTIVE_PROFILE: ${ACTIVE_PROFILE}
-      ENV_PATH: ${ENV_PATH}
       LOG_PATH: ${LOG_PATH}
-      INFO_LOG_FILE: ${INFO_LOG_FILE}
-      ERROR_LOG_FILE: ${ERROR_LOG_FILE}
       HOST_LOG_PATH: ${HOST_LOG_PATH}
     volumes:
       - "${HOST_PATH}:${CONTAINER_PATH}"
