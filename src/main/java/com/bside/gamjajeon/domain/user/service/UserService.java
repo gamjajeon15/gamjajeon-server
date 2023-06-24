@@ -1,11 +1,12 @@
 package com.bside.gamjajeon.domain.user.service;
 
-import com.bside.gamjajeon.domain.user.dto.request.EmailRequest;
-import com.bside.gamjajeon.domain.user.dto.request.LoginRequest;
-import com.bside.gamjajeon.domain.user.dto.request.SignupRequest;
-import com.bside.gamjajeon.domain.user.dto.request.UsernameRequest;
+import com.bside.gamjajeon.domain.user.dto.request.*;
 import com.bside.gamjajeon.domain.user.dto.response.LoginResponse;
+import com.bside.gamjajeon.domain.user.dto.response.UsernameResponse;
+import com.bside.gamjajeon.domain.user.entity.User;
+import com.bside.gamjajeon.domain.user.exception.AccountNotFoundException;
 import com.bside.gamjajeon.domain.user.exception.EmailExistException;
+import com.bside.gamjajeon.domain.user.exception.EmailNotFoundException;
 import com.bside.gamjajeon.domain.user.exception.UsernameExistException;
 import com.bside.gamjajeon.domain.user.mapper.UserMapper;
 import com.bside.gamjajeon.domain.user.repository.UserRepository;
@@ -17,8 +18,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.validation.Valid;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -30,6 +34,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final CustomJwtProvider provider;
     private final JwtUtil jwtUtil;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public LoginResponse signup(SignupRequest signupRequest) {
@@ -68,12 +73,27 @@ public class UserService {
         if (userRepository.existsByUsername(usernameRequest.getUsername())) {
             throw new UsernameExistException();
         }
-
     }
 
     public void checkEmail(EmailRequest emailRequest) {
         if (userRepository.existsByEmail(emailRequest.getEmail())) {
             throw new EmailExistException();
         }
+    }
+
+    public UsernameResponse findUsername(EmailRequest emailRequest) {
+        String username = userRepository.findUsernameByEmail(emailRequest.getEmail()).orElseThrow(EmailNotFoundException::new);
+        return new UsernameResponse(username);
+    }
+
+    @Transactional
+    public void resetPassword(User user, @Valid PasswordRequest passwordRequest) {
+        if (!userRepository.existsByUsernameAndEmail(passwordRequest.getUsername(), passwordRequest.getEmail())) {
+            throw new AccountNotFoundException();
+        }
+
+        String newPassword = passwordEncoder.encode(passwordRequest.getPassword());
+        user.setPassword(newPassword);
+        userRepository.save(user);
     }
 }

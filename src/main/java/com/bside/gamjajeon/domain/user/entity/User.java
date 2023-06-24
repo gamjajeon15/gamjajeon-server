@@ -46,4 +46,8 @@ public class User extends BaseEntity {
         this.password = password;
         this.adStatus = adStatus;
     }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
