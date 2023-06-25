@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class SignupResponse {
-    private long userId;
+public class UsernameResponse {
+    private String username;
 }

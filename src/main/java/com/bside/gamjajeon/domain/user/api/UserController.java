@@ -1,11 +1,9 @@
 package com.bside.gamjajeon.domain.user.api;
 
-import com.bside.gamjajeon.domain.user.dto.request.EmailRequest;
-import com.bside.gamjajeon.domain.user.dto.request.LoginRequest;
-import com.bside.gamjajeon.domain.user.dto.request.SignupRequest;
-import com.bside.gamjajeon.domain.user.dto.request.UsernameRequest;
+import com.bside.gamjajeon.domain.user.dto.request.*;
 import com.bside.gamjajeon.domain.user.dto.response.LoginResponse;
 import com.bside.gamjajeon.domain.user.dto.response.TokenResponse;
+import com.bside.gamjajeon.domain.user.dto.response.UsernameResponse;
 import com.bside.gamjajeon.domain.user.service.TokenService;
 import com.bside.gamjajeon.domain.user.service.UserService;
 import com.bside.gamjajeon.global.dto.ApiResponse;
@@ -53,22 +51,28 @@ public class UserController {
     public ApiResponse<Object> checkUsername(@Valid @RequestBody UsernameRequest usernameRequest) {
         log.debug("Username Request = " + usernameRequest.toString());
         userService.checkUsername(usernameRequest);
-        return ApiResponse.empty();
+        return ApiResponse.of("사용 가능한 아이디에요");
     }
 
     @PostMapping("/check/email")
     public ApiResponse<Object> checkEmail(@Valid @RequestBody EmailRequest emailRequest) {
         log.debug("Email Request = " + emailRequest.toString());
         userService.checkEmail(emailRequest);
+        return ApiResponse.of("사용 가능한 이메일 주소에요");
+    }
+
+    @PostMapping("/find/username")
+    public ApiResponse<Object> findUsername(@Valid @RequestBody EmailRequest emailRequest) {
+        log.info("Username Request = " + emailRequest.toString());
+        UsernameResponse usernameResponse = userService.findUsername(emailRequest);
+        return ApiResponse.of(usernameResponse);
+    }
+
+    @PostMapping("/reset/password")
+    public ApiResponse<Object> findUsername(@Valid @RequestBody PasswordRequest passwordRequest,
+                                            @AuthUser CustomUserDetails userDetails) {
+        log.info("Password Request = " + passwordRequest.toString());
+        userService.resetPassword(userDetails.getUser(), passwordRequest);
         return ApiResponse.empty();
     }
-
-    /**
-     * TODO: 테스트 위해 추가한 API (다음 작업에서 삭제)
-     */
-    @GetMapping("/test")
-    public String test(@AuthUser CustomUserDetails user) {
-        return "test";
-    }
-
 }
