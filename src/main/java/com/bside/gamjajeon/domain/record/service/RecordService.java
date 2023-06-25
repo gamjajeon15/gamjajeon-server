@@ -1,8 +1,13 @@
 package com.bside.gamjajeon.domain.record.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
+import org.springframework.data.web.HateoasPageableHandlerMethodArgumentResolver;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
@@ -12,6 +17,7 @@ import com.bside.gamjajeon.domain.record.dto.response.RecordResponse;
 import com.bside.gamjajeon.domain.record.entity.Hashtag;
 import com.bside.gamjajeon.domain.record.entity.Record;
 import com.bside.gamjajeon.domain.record.entity.RecordHashtag;
+import com.bside.gamjajeon.domain.record.exception.RecordDateInvalidException;
 import com.bside.gamjajeon.domain.record.repository.HashtagRepository;
 import com.bside.gamjajeon.domain.record.repository.RecordRepository;
 import com.bside.gamjajeon.domain.user.entity.User;
@@ -30,6 +36,7 @@ public class RecordService {
 
 	@Transactional
 	public RecordResponse save(User user, RecordRequest recordRequest) {
+		validateRecordDate(recordRequest);
 
 		if (!ObjectUtils.isEmpty(recordRequest.getHashtagList())) {
 			return createRecordWithHashtags(user, recordRequest);
@@ -39,18 +46,13 @@ public class RecordService {
 
 	}
 
-	@Transactional
-	public List<Hashtag> validateHashtags(RecordRequest recordRequest) {
+	private void validateRecordDate(RecordRequest recordRequest) {
+		Date recordDate = recordRequest.getRecordDate();
+		Date today = new Date();
 
-		List<Hashtag> hashtaglist = new ArrayList<Hashtag>();
-
-		for (String keyword : recordRequest.getHashtagList()) {
-			Hashtag hashtag = hashtagRepository.findByKeyword(keyword)
-				.orElse(hashtagRepository.save(new Hashtag(keyword)));
-			hashtaglist.add(hashtag);
+		if (recordDate.after(today)) {
+			throw new RecordDateInvalidException();
 		}
-
-		return hashtaglist;
 	}
 
 	@Transactional
@@ -75,6 +77,22 @@ public class RecordService {
 			recordRequest.getRecordDate(), recordHashtags);
 		recordRepository.save(record);
 		return new RecordResponse(record.getId());
+	}
+
+	@Transactional
+	public List<Hashtag> validateHashtags(RecordRequest recordRequest) {
+
+		List<Hashtag> hashtaglist = new ArrayList<Hashtag>();
+
+		for (String keyword : recordRequest.getHashtagList()) {
+			if (hashtagRepository.findByKeyword(keyword).isPresent()) {
+				hashtaglist.add(hashtagRepository.findByKeyword(keyword).get());
+			} else {
+				hashtaglist.add(hashtagRepository.save(new Hashtag(keyword)));
+			}
+		}
+
+		return hashtaglist;
 	}
 
 }
