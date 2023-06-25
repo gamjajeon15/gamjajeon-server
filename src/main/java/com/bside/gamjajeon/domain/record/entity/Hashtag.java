@@ -36,4 +36,6 @@ public class Hashtag extends BaseEntity {
 	public Hashtag(String keyword) {
 		this.keyword = keyword;
 	}
+
+
 }

@@ -29,7 +29,7 @@ public class RecordController {
 	@PostMapping
 	public ApiResponse<Object> createRecord(@AuthUser CustomUserDetails user,
 		@Valid @RequestBody RecordRequest recordRequest) {
-		log.debug("Record Create Started with = " + recordRequest.toString());
+		log.info("Record Create Started with = " + recordRequest.toString());
 		return ApiResponse.of(recordService.save(user.getUser(), recordRequest));
 	}
 }
