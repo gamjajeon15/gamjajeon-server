@@ -1,5 +1,7 @@
 package com.bside.gamjajeon.global.error.handler;
 
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.SdkClientException;
 import com.bside.gamjajeon.global.dto.ErrorResponse;
 import com.bside.gamjajeon.global.dto.enums.ErrorCode;
 import com.bside.gamjajeon.global.error.GeneralException;
@@ -11,6 +13,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.Objects;
 
 @Slf4j
 @RestControllerAdvice
@@ -37,7 +41,20 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler
     public ResponseEntity<Object> handleMismatchedInput(HttpMessageNotReadableException e) {
+        log.error("[HttpMessageNotReadableException] " + e.getMessage());
         return getResponseEntity(ErrorCode.VALIDATION_ERROR, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Object> handleAmazonServiceError(AmazonServiceException e) {
+        log.error("[AmazonServiceException] " + e.getErrorMessage());
+        return getResponseEntity(ErrorCode.INTERNAL_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Object> handleAmazonServiceError(SdkClientException e) {
+        log.error("[SdkClientException] " + e.getMessage());
+        return getResponseEntity(ErrorCode.INTERNAL_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler
