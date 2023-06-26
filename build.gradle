@@ -53,6 +53,9 @@ dependencies {
     // p6spy
     implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.1'
 
+    // AWS SDK
+    implementation 'com.amazonaws:aws-java-sdk-s3:1.11.238'
+
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
     // test
