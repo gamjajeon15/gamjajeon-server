@@ -16,9 +16,9 @@ public enum ErrorCode {
     INTERNAL_ERROR("C004", ErrorCategory.SERVER, "서버 에러입니다"),
 
     // User
-    EMAIL_ALREADY_EXIST("U001", ErrorCategory.CLIENT, "이미 사용 중인 이메일 주소에요"),
+    EMAIL_ALREADY_EXIST("U001", ErrorCategory.CLIENT, "이미 사용 중인 이메일 주소예요"),
     ID_ALREADY_EXIST("U002", ErrorCategory.CLIENT, "사용할 수 없는 아이디예요"),
-    USER_NOT_FOUND("U003", ErrorCategory.CLIENT, "존재하지 않는 아이디이에요"),
+    USER_NOT_FOUND("U003", ErrorCategory.CLIENT, "존재하지 않는 아이디예요"),
     PASSWORD_INVALID("U004", ErrorCategory.CLIENT, "비밀번호가 올바르지 않아요"),
     EMAIL_NOT_FOUND("U005", ErrorCategory.CLIENT, "존재하지 않는 이메일이에요"),
     ACCOUNT_NOT_FOUND("U006", ErrorCategory.CLIENT, "존재하지 않는 계정이에요"),
