@@ -22,3 +22,10 @@ spring:
 server:
   port: ${PORT}
   shutdown: graceful
+
+# 로그 설정
+log:
+  config:
+    path: ${LOG_PATH}
+    info_log_file: info
+    error_log_file: err
