@@ -25,7 +25,7 @@ public class RecordController {
     @PostMapping
     public ApiResponse<Object> createRecord(@AuthUser CustomUserDetails user,
                                             @Valid @RequestPart("record") RecordRequest recordRequest,
-                                            @RequestPart("file") MultipartFile multipartFile) throws IOException {
+                                            @RequestPart(value = "file", required = false) MultipartFile multipartFile) throws IOException {
         log.info("Record Create Started with = " + recordRequest.toString());
         return ApiResponse.of(recordService.save(user.getUser(), recordRequest, multipartFile));
     }
