@@ -74,9 +74,9 @@ public class RecordService {
 			recordHashtags.add(recordHashtag);
 		}
 		Record record = new Record(user, recordRequest, recordHashtags);
-		Record savedRecord = recordRepository.save(record);
-		saveImage(user, image, savedRecord);
-		return new RecordResponse(savedRecord.getId());
+		recordRepository.save(record);
+		saveImage(user, image, record);
+		return new RecordResponse(record.getId());
 	}
 
 	@Transactional
