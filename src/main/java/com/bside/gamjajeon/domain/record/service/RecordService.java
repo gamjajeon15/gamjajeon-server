@@ -69,8 +69,9 @@ public class RecordService {
             RecordHashtag recordHashtag = RecordHashtag.createRecordHashtag(hashtag);
             recordHashtags.add(recordHashtag);
         }
-
-        Record savedRecord = recordRepository.save(recordMapper.toRecord(user, recordRequest, recordHashtags));
+        // Record record = new Record(user, recordRequest, recordHashtags);
+        Record record = recordMapper.toRecord(user, recordRequest, recordHashtags);
+        Record savedRecord = recordRepository.save(record);
         saveImage(user, image, savedRecord);
         return new RecordResponse(savedRecord.getId());
     }
