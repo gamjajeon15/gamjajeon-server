@@ -14,8 +14,6 @@ import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.Objects;
-
 @Slf4j
 @RestControllerAdvice
 public class ApiExceptionHandler {
@@ -65,14 +63,6 @@ public class ApiExceptionHandler {
 
     private ResponseEntity<Object> getResponseEntity(ErrorCode errorCode, HttpStatus status) {
         return ResponseEntity.status(status).body(ErrorResponse.of(errorCode));
-    }
-
-    private ResponseEntity<Object> getResponseEntity(GeneralException e, HttpStatus status) {
-        return ResponseEntity.status(status).body(ErrorResponse.of(e));
-    }
-
-    private ResponseEntity<Object> getResponseEntity(ErrorCode errorCode, HttpStatus status, String message) {
-        return ResponseEntity.status(status).body(ErrorResponse.of(errorCode, message));
     }
 
 }
