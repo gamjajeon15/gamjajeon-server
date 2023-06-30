@@ -4,9 +4,12 @@ import lombok.*;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+@ToString
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class SignupRequest {
@@ -16,9 +19,13 @@ public class SignupRequest {
     private String email;
 
     @NotBlank
+    @Size(min = 8, max = 20)
     private String password;
 
     @NotBlank
-    @Size(min = 1, max = 10)
+    @Size(min = 2, max = 32)
     private String username;
+
+    @NotNull
+    private int adStatus;
 }

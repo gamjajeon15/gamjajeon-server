@@ -9,12 +9,12 @@ import lombok.ToString;
 @ToString
 public class ErrorResponse {
 
-    private final boolean success;
+    private final boolean result;
     private final String message;
     private final String errorCode;
 
     public ErrorResponse(String errorCode, String message) {
-        this.success = false;
+        this.result = false;
         this.message = message;
         this.errorCode = errorCode;
     }

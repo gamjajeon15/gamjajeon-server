@@ -1,16 +1,18 @@
 spring:
   config:
-    import: optional:file:.env[.properties]
+    import: ${ENV_PATH}
 
   # profile 설정
   profiles:
     group:
-      local: local-profile
-      dev: dev-profile
-      prod: prod-profile
+      local: local
+      dev: dev
+      prod: prod
 
     include:
       - db
+      - security
+      - cloud
 
   # 업로드 파일 크기 제한
   servlet:
@@ -20,3 +22,10 @@ spring:
 server:
   port: ${PORT}
   shutdown: graceful
+
+# 로그 설정
+log:
+  config:
+    path: ${LOG_PATH}
+    info_log_file: info
+    error_log_file: err

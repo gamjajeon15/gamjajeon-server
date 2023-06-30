@@ -29,7 +29,7 @@ spring:
 spring:
   config:
     activate:
-      on-profile: local-profile
+      on-profile: local
   jpa:
     show-sql: false
     properties:
@@ -40,7 +40,7 @@ spring:
 spring:
   config:
     activate:
-      on-profile: prod-profile
+      on-profile: prod
   jpa:
     show-sql: false
 
