@@ -68,7 +68,7 @@ public class UserController {
         return ApiResponse.of(usernameResponse);
     }
 
-    @PostMapping("/reset/password")
+    @PatchMapping("/reset/password")
     public ApiResponse<Object> findUsername(@Valid @RequestBody PasswordRequest passwordRequest,
                                             @AuthUser CustomUserDetails userDetails) {
         log.info("Password Request = " + passwordRequest.toString());
