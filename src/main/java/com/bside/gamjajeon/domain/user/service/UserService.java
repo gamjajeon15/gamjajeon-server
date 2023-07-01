@@ -1,5 +1,6 @@
 package com.bside.gamjajeon.domain.user.service;
 
+import com.bside.gamjajeon.domain.record.repository.RecordRepository;
 import com.bside.gamjajeon.domain.user.dto.request.*;
 import com.bside.gamjajeon.domain.user.dto.response.LoginResponse;
 import com.bside.gamjajeon.domain.user.dto.response.UsernameResponse;
@@ -35,6 +36,7 @@ public class UserService {
     private final CustomJwtProvider provider;
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
+    private final RecordRepository recordRepository;
 
     @Transactional
     public LoginResponse signup(SignupRequest signupRequest) {
@@ -95,5 +97,11 @@ public class UserService {
         String newPassword = passwordEncoder.encode(passwordRequest.getPassword());
         user.setPassword(newPassword);
         userRepository.save(user);
+    }
+
+    @Transactional
+    public void withdraw(User user) {
+        recordRepository.deleteByUser(user);
+        userRepository.delete(user);
     }
 }
