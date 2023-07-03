@@ -3,6 +3,7 @@ package com.bside.gamjajeon.domain.user.service;
 import com.bside.gamjajeon.domain.record.repository.RecordRepository;
 import com.bside.gamjajeon.domain.user.dto.request.*;
 import com.bside.gamjajeon.domain.user.dto.response.LoginResponse;
+import com.bside.gamjajeon.domain.user.dto.response.ProfileResponse;
 import com.bside.gamjajeon.domain.user.dto.response.UsernameResponse;
 import com.bside.gamjajeon.domain.user.entity.User;
 import com.bside.gamjajeon.domain.user.exception.AccountNotFoundException;
@@ -103,5 +104,9 @@ public class UserService {
     public void withdraw(User user) {
         recordRepository.deleteByUser(user);
         userRepository.delete(user);
+    }
+
+    public ProfileResponse getProfile(Long userId) {
+        return userRepository.findUserById(userId).orElseThrow(AccountNotFoundException::new);
     }
 }
