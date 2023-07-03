@@ -76,4 +76,10 @@ public class UserController {
         return ApiResponse.empty();
     }
 
+    @DeleteMapping
+    public ApiResponse<Object> withdraw(@AuthUser CustomUserDetails userDetails) {
+        userService.withdraw(userDetails.getUser());
+        return ApiResponse.empty();
+    }
+
 }
