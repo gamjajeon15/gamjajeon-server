@@ -6,6 +6,7 @@ import com.amazonaws.services.s3.model.GroupGrantee;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.Permission;
 import com.bside.gamjajeon.domain.record.dto.request.RecordRequest;
+import com.bside.gamjajeon.domain.record.dto.response.RecordJoinResponse;
 import com.bside.gamjajeon.domain.record.dto.response.RecordResponse;
 import com.bside.gamjajeon.domain.record.entity.Hashtag;
 import com.bside.gamjajeon.domain.record.entity.Image;
@@ -21,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
@@ -30,6 +32,7 @@ import javax.imageio.ImageIO;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -73,10 +76,10 @@ public class RecordService {
 			RecordHashtag recordHashtag = RecordHashtag.createRecordHashtag(hashtag);
 			recordHashtags.add(recordHashtag);
 		}
-		Record record = new Record(user, recordRequest, recordHashtags);
-		recordRepository.save(record);
-		saveImage(user, image, record);
-		return new RecordResponse(record.getId());
+		Record savedRecord = new Record(user, recordRequest, recordHashtags);
+		recordRepository.save(savedRecord);
+		saveImage(user, image, savedRecord);
+		return new RecordResponse(savedRecord.getId());
 	}
 
 	@Transactional
@@ -132,6 +135,30 @@ public class RecordService {
 		accessControlList.grantPermission(GroupGrantee.AllUsers, Permission.Read);
 		s3Client.setObjectAcl(bucketName, objectName, accessControlList);
 		return objectName;
+	}
+
+	public List<RecordJoinResponse> findRecordsAll(LocalDate localDate) {
+
+		Sort sort = Sort.by(
+			Sort.Order.desc("recordDate"),
+			Sort.Order.desc("createdAt")
+		);
+
+		int year = localDate.getYear();
+		int month = localDate.getMonthValue();
+
+		// Record 조회
+		List<Record> recordList = recordRepository.findAllbyRecordDate(year, month, sort);
+
+		// Response 객체 변환
+		List<RecordJoinResponse> recordJoinResponseList = new ArrayList<>();
+
+		for (Record record : recordList) {
+			RecordJoinResponse recordJoinResponse = new RecordJoinResponse(record);
+			recordJoinResponseList.add(recordJoinResponse);
+		}
+
+		return recordJoinResponseList;
 	}
 
 }
