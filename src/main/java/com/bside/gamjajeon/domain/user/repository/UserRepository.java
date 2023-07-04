@@ -1,5 +1,6 @@
 package com.bside.gamjajeon.domain.user.repository;
 
+import com.bside.gamjajeon.domain.user.dto.response.ProfileResponse;
 import com.bside.gamjajeon.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,4 +18,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT u.username FROM User u where u.email = :email")
     Optional<String> findUsernameByEmail(String email);
+
+    @Query("SELECT u.username as username, u.email as email FROM User u where u.id = :id")
+    Optional<ProfileResponse> findUserById(Long id);
+
 }

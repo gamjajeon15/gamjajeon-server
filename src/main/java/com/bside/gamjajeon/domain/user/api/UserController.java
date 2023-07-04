@@ -2,6 +2,7 @@ package com.bside.gamjajeon.domain.user.api;
 
 import com.bside.gamjajeon.domain.user.dto.request.*;
 import com.bside.gamjajeon.domain.user.dto.response.LoginResponse;
+import com.bside.gamjajeon.domain.user.dto.response.ProfileResponse;
 import com.bside.gamjajeon.domain.user.dto.response.TokenResponse;
 import com.bside.gamjajeon.domain.user.dto.response.UsernameResponse;
 import com.bside.gamjajeon.domain.user.service.TokenService;
@@ -80,6 +81,12 @@ public class UserController {
     public ApiResponse<Object> withdraw(@AuthUser CustomUserDetails userDetails) {
         userService.withdraw(userDetails.getUser());
         return ApiResponse.empty();
+    }
+
+    @GetMapping("/profile")
+    public ApiResponse<Object> getProfile(@AuthUser CustomUserDetails userDetails) {
+        ProfileResponse profileResponse = userService.getProfile(userDetails.getId());
+        return ApiResponse.of(profileResponse);
     }
 
 }
