@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Comment;
+import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
 
@@ -23,7 +24,7 @@ public class Image extends BaseEntity {
     @Column(name = "image_id")
     private Long id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "record_id")
     private Record record;
 
