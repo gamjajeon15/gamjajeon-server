@@ -137,7 +137,7 @@ public class RecordService {
 		return objectName;
 	}
 
-	public List<RecordJoinResponse> findRecordsAll(LocalDate localDate) {
+	public List<RecordJoinResponse> findRecordsAll(User user, LocalDate localDate) {
 
 		Sort sort = Sort.by(
 			Sort.Order.desc("recordDate"),
@@ -148,7 +148,7 @@ public class RecordService {
 		int month = localDate.getMonthValue();
 
 		// Record 조회
-		List<Record> recordList = recordRepository.findAllbyRecordDate(year, month, sort);
+		List<Record> recordList = recordRepository.findAllbyRecordDate(user, year, month, sort);
 
 		// Response 객체 변환
 		List<RecordJoinResponse> recordJoinResponseList = new ArrayList<>();

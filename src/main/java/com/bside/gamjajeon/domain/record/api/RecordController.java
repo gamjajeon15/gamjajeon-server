@@ -39,7 +39,7 @@ public class RecordController {
 		@RequestParam String searchDate) {
 		LocalDate localDate = LocalDate.parse(searchDate);
 		log.info("One Month Record Searching Started with = " + localDate.toString());
-		return ApiResponse.of(recordService.findRecordsAll(localDate));
+		return ApiResponse.of(recordService.findRecordsAll(user.getUser(), localDate));
 	}
 
 }
