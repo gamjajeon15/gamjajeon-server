@@ -26,7 +26,7 @@ public class RecordController {
 	private final RecordService recordService;
 
 	@ResponseStatus(HttpStatus.CREATED)
-	@PostMapping("/create")
+	@PostMapping
 	public ApiResponse<Object> createRecord(@AuthUser CustomUserDetails user,
 		@Valid @RequestPart("record") RecordRequest recordRequest,
 		@RequestPart(value = "file", required = false) MultipartFile multipartFile) throws IOException {
@@ -34,12 +34,20 @@ public class RecordController {
 		return ApiResponse.of(recordService.save(user.getUser(), recordRequest, multipartFile));
 	}
 
-	@GetMapping("/searchAll")
+	@GetMapping
 	public ApiResponse<Object> getMonthRecords(@AuthUser CustomUserDetails user,
 		@RequestParam String searchDate) {
 		LocalDate localDate = LocalDate.parse(searchDate);
 		log.info("One Month Record Searching Started with = " + localDate.toString());
 		return ApiResponse.of(recordService.findRecordsAll(user.getUser(), localDate));
+	}
+
+	@DeleteMapping
+	public ApiResponse<Object> deleteRecord(@AuthUser CustomUserDetails user,
+		@RequestParam Integer recordId){
+		log.info("Record Delete Started with = " + recordId.toString());
+		recordService.deleteRecord(user.getUser(), recordId);
+		return ApiResponse.of(recordId);
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -15,5 +16,8 @@ public interface RecordRepository extends JpaRepository<Record, Long> {
     List<Record> findAllbyRecordDate(@Param("user") User user, @Param("year") int year, @Param("month") int month,
         Sort sort);
 
-    void deleteByUser(User user);
+    @Modifying
+    @Query("delete from Record r where r.id =:id and r.user=:user")
+    void deleteByIdAndUser(@Param("id") Long id, @Param("user") User user);
+
 }
