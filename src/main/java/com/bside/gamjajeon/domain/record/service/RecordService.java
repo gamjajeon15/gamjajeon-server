@@ -6,6 +6,7 @@ import com.amazonaws.services.s3.model.GroupGrantee;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.Permission;
 import com.bside.gamjajeon.domain.record.dto.request.RecordRequest;
+import com.bside.gamjajeon.domain.record.dto.response.MoodResponse;
 import com.bside.gamjajeon.domain.record.dto.response.RecordResponse;
 import com.bside.gamjajeon.domain.record.entity.Hashtag;
 import com.bside.gamjajeon.domain.record.entity.Image;
@@ -134,4 +135,7 @@ public class RecordService {
 		return objectName;
 	}
 
+	public MoodResponse getMoodStatistics(User user, Integer year) {
+		return recordRepository.findMoodTypeByUserAndYear(user, year);
+	}
 }
