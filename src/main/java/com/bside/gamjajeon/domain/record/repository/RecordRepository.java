@@ -1,6 +1,6 @@
 package com.bside.gamjajeon.domain.record.repository;
 
-import java.util.List;
+import java.time.LocalDate;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,9 +17,8 @@ public interface RecordRepository extends JpaRepository<Record, Long> {
         + "FROM Record r WHERE r.user = :user AND YEAR(r.createdAt) = :year")
     MoodResponse findMoodTypeByUserAndYear(User user, Integer year);
 
-    @Query("SELECT COUNT(CASE r.moodType WHEN 0 THEN 1 END), COUNT(CASE WHEN r.moodType = 1 THEN 1 END)"
+    @Query("SELECT COUNT(CASE r.moodType WHEN 0 THEN 1 END) AS potato, COUNT(CASE WHEN r.moodType = 1 THEN 1 END) AS sweetPotato "
         + "FROM Record r WHERE r.user = :user AND r.recordDate >= DATE(:startDate) and r.recordDate <= DATE(:endDate)")
-
-    List<List<Integer>> findMoodTypeCountByUserAndDate(User user, String startDate, String endDate);
+    MoodResponse findMoodTypeCountByUserAndDate(User user, LocalDate startDate, LocalDate endDate);
 
 }
