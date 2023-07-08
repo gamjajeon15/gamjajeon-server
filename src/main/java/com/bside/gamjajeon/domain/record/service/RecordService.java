@@ -116,7 +116,7 @@ public class RecordService {
         String imagePath = uploadStorage(user, image);
         BufferedImage bufferedImage = ImageIO.read(image.getInputStream());
         String url = endpoint + "/" + bucketName + "/" + imagePath;
-        Image newImage = new Image(bufferedImage.getWidth(), bufferedImage.getHeight(), url, savedRecord);
+        Image newImage = new Image(url, savedRecord);
         imageRepository.save(newImage);
     }
 
