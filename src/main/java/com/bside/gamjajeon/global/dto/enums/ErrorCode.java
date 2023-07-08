@@ -31,7 +31,8 @@ public enum ErrorCode {
     // Record
     RECORD_FORMAT_INVALID("R001", ErrorCategory.CLIENT, "유효한 입력값이 아니예요."),
     DATE_FORMAT_INVALID("R002", ErrorCategory.CLIENT, "날짜 형식이 맞지 않아요.(yyyy-MM-dd)"),
-    RECORD_DATE_INVALID("R003", ErrorCategory.CLIENT, "미래의 날짜는 일기를 작성할 수 없어요.");
+    RECORD_DATE_INVALID("R003", ErrorCategory.CLIENT, "미래의 날짜는 일기를 작성할 수 없어요."),
+    RECORD_NOT_FOUND("R004", ErrorCategory.CLIENT, "유효하지 않은 기록 id예요.");
 
     private final String code;
     private final ErrorCategory errorCategory;
