@@ -14,6 +14,7 @@ public enum ErrorCode {
     NOT_EXIST_API("C002", ErrorCategory.CLIENT, "요청 주소가 올바르지 않습니다"),
     ACCESS_DENIED("C003", ErrorCategory.CLIENT, "접근 권한이 없습니다"),
     INTERNAL_ERROR("C004", ErrorCategory.SERVER, "서버 에러입니다"),
+    MISSING_PARAM_ERROR("C005", ErrorCategory.CLIENT, "필수 파라미터를 확인해주세요"),
 
     // User
     EMAIL_ALREADY_EXIST("U001", ErrorCategory.CLIENT, "이미 사용 중인 이메일 주소예요"),

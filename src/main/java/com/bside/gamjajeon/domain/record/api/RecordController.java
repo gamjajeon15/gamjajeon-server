@@ -1,18 +1,27 @@
 package com.bside.gamjajeon.domain.record.api;
 
+import java.io.IOException;
+
+import javax.validation.Valid;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.bside.gamjajeon.domain.record.dto.request.RecordRequest;
 import com.bside.gamjajeon.domain.record.service.RecordService;
 import com.bside.gamjajeon.global.dto.ApiResponse;
 import com.bside.gamjajeon.global.security.model.AuthUser;
 import com.bside.gamjajeon.global.security.model.CustomUserDetails;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.validation.Valid;
-import java.io.IOException;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -28,5 +37,10 @@ public class RecordController {
                                             @RequestPart(value = "file", required = false) MultipartFile multipartFile) throws IOException {
         log.info("Record Create Started with = " + recordRequest.toString());
         return ApiResponse.of(recordService.save(user.getUser(), recordRequest, multipartFile));
+    }
+
+    @GetMapping("/mood")
+    public ApiResponse<Object> getMoodStatistics(@AuthUser CustomUserDetails userDetails, @RequestParam Integer year) {
+        return ApiResponse.of(recordService.getMoodStatistics(userDetails.getUser(), year));
     }
 }
