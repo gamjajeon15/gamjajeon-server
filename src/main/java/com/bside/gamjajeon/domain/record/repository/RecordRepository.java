@@ -12,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 
 import net.bytebuddy.asm.Advice;
 
+import com.bside.gamjajeon.domain.record.dto.response.MoodResponse;
 import com.bside.gamjajeon.domain.record.entity.Record;
 import com.bside.gamjajeon.domain.user.entity.User;
 

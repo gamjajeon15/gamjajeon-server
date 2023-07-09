@@ -115,7 +115,6 @@ public class RecordService {
             return;
 
         String imagePath = uploadStorage(user, image);
-        BufferedImage bufferedImage = ImageIO.read(image.getInputStream());
         String url = endpoint + "/" + bucketName + "/" + imagePath;
         Image newImage = new Image(url, savedRecord);
         imageRepository.save(newImage);
@@ -181,23 +180,13 @@ public class RecordService {
         }
 
         // 1. record_hashtag 삭제
-        if (record.get().getRecordHashtags() != null) {
-            record.get().getRecordHashtags().stream().forEach(recordHashtag -> {
-                recordHashtag.setRecord(null);
-                recordHashtag.setHashtag(null);
-                recordHashtagRepository.delete(recordHashtag);
-            });
+        if (record.get().getRecordHashtags() != null || !record.get().getRecordHashtags().isEmpty()) {
+            deleteRecordHashtagList(record.get().getRecordHashtags());
         }
 
         // 2. image 삭제
         if (record.get().getImage() != null) {
-            Image image = record.get().getImage();
-
-            // 2.1  storage image 삭제
-            deleteStorage(image.getUrl());
-
-            // 2.1. image 튜플 삭제
-            imageRepository.delete(record.get().getImage());
+            deleteImage(record.get().getImage());
         }
 
         // 3. record 삭제
@@ -206,10 +195,22 @@ public class RecordService {
         recordRepository.deleteByIdAndUser(record.get().getId(), user);
     }
 
-    private void deleteStorage(String url) {
-        // 파일 삭제
-        String objectName = "";
-        objectName = url.split(endpoint + "/" + bucketName + "/")[1];
+    private void deleteRecordHashtagList(List<RecordHashtag> recordHashtagList) {
+        recordHashtagList.stream().forEach(recordHashtag -> {
+            recordHashtag.setRecord(null);
+            recordHashtag.setHashtag(null);
+            recordHashtagRepository.delete(recordHashtag);
+        });
+    }
+
+    private void deleteImage(Image image) {
+        // Storage Image 삭제
+        String objectName = image.getUrl();
+        objectName = objectName.split(endpoint + "/" + bucketName + "/")[1];
         s3Client.deleteObject(bucketName, objectName);
+
+        // Image 객체 삭제
+        image.setRecord(null);
+        imageRepository.delete(image);
     }
 }

@@ -51,6 +51,7 @@ public class RecordController {
 		return ApiResponse.of(recordService.findRecordsAll(user.getUser(), localDate));
 	}
 
+<<<<<<< HEAD
 	@GetMapping("/mood")
 	public ApiResponse<Object> getMoodStatistics(@AuthUser CustomUserDetails userDetails, @RequestParam Integer year) {
 		return ApiResponse.of(recordService.getMoodStatistics(userDetails.getUser(), year));
@@ -59,6 +60,11 @@ public class RecordController {
 	@DeleteMapping("/{recordId}")
 	public ApiResponse<Object> deleteRecord(@AuthUser CustomUserDetails user,
 		@PathVariable Integer recordId) {
+=======
+	@DeleteMapping("/{recordId}")
+	public ApiResponse<Object> deleteRecord(@AuthUser CustomUserDetails user,
+		@PathVariable Integer recordId){
+>>>>>>> ecf6158 (fix : detect method and modify controller url)
 		log.info("Record Delete Started with = " + recordId.toString());
 		recordService.deleteRecord(user.getUser(), recordId);
 		return ApiResponse.of(recordId);
