@@ -14,6 +14,7 @@ import com.bside.gamjajeon.domain.record.entity.Record;
 import com.bside.gamjajeon.domain.user.entity.User;
 
 public interface RecordRepository extends JpaRepository<Record, Long> {
+<<<<<<< HEAD
 
 	void deleteByUser(User user);
 
@@ -30,4 +31,9 @@ public interface RecordRepository extends JpaRepository<Record, Long> {
 	@Query("from Record r where year(r.recordDate) =:year and month(r.recordDate) =:month")
 	List<Record> findAllbyRecordDate(@Param("year") int year, @Param("month") int month, Sort sort);
 
+=======
+	@Query("from Record r where r.user =:user and year(r.recordDate) =:year and month(r.recordDate) =:month")
+	List<Record> findAllbyRecordDate(@Param("user") User user, @Param("year") int year, @Param("month") int month,
+		Sort sort);
+>>>>>>> 4470c80 (feature : 기록 검색시 userId 파라미터 추가, 응답시 createdAt, updatedAt 리스폰스 필드 추가)
 }
