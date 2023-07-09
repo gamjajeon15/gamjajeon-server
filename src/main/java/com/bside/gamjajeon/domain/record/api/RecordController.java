@@ -34,17 +34,17 @@ public class RecordController {
 		return ApiResponse.of(recordService.save(user.getUser(), recordRequest, multipartFile));
 	}
 
-	@GetMapping
+	@GetMapping("/{searchDate}")
 	public ApiResponse<Object> getMonthRecords(@AuthUser CustomUserDetails user,
-		@RequestParam String searchDate) {
+		@PathVariable String searchDate) {
 		LocalDate localDate = LocalDate.parse(searchDate);
 		log.info("One Month Record Searching Started with = " + localDate.toString());
 		return ApiResponse.of(recordService.findRecordsAll(user.getUser(), localDate));
 	}
 
-	@DeleteMapping
+	@DeleteMapping("/{recordId}")
 	public ApiResponse<Object> deleteRecord(@AuthUser CustomUserDetails user,
-		@RequestParam Integer recordId){
+		@PathVariable Integer recordId){
 		log.info("Record Delete Started with = " + recordId.toString());
 		recordService.deleteRecord(user.getUser(), recordId);
 		return ApiResponse.of(recordId);
