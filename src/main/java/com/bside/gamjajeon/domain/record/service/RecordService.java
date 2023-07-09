@@ -138,15 +138,11 @@ public class RecordService {
 		return objectName;
 	}
 
-<<<<<<< HEAD
 	public MoodResponse getMoodStatistics(User user, Integer year) {
 		return recordRepository.findMoodTypeByUserAndYear(user, year);
 	}
 
-	public List<RecordJoinResponse> findRecordsAll(LocalDate localDate) {
-=======
 	public List<RecordJoinResponse> findRecordsAll(User user, LocalDate localDate) {
->>>>>>> 4470c80 (feature : 기록 검색시 userId 파라미터 추가, 응답시 createdAt, updatedAt 리스폰스 필드 추가)
 
 		Sort sort = Sort.by(
 			Sort.Order.desc("recordDate"),
