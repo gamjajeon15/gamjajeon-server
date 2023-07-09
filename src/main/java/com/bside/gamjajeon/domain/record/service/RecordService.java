@@ -7,14 +7,17 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.Permission;
 import com.bside.gamjajeon.domain.record.dto.request.RecordRequest;
 import com.bside.gamjajeon.domain.record.dto.response.MoodResponse;
+import com.bside.gamjajeon.domain.record.dto.response.RecordJoinResponse;
 import com.bside.gamjajeon.domain.record.dto.response.RecordResponse;
 import com.bside.gamjajeon.domain.record.entity.Hashtag;
 import com.bside.gamjajeon.domain.record.entity.Image;
 import com.bside.gamjajeon.domain.record.entity.Record;
 import com.bside.gamjajeon.domain.record.entity.RecordHashtag;
+import com.bside.gamjajeon.domain.record.exception.RecordNotFoundException;
 import com.bside.gamjajeon.domain.record.mapper.RecordMapper;
 import com.bside.gamjajeon.domain.record.repository.HashtagRepository;
 import com.bside.gamjajeon.domain.record.repository.ImageRepository;
+import com.bside.gamjajeon.domain.record.repository.RecordHashtagRepository;
 import com.bside.gamjajeon.domain.record.repository.RecordRepository;
 import com.bside.gamjajeon.domain.user.entity.User;
 
@@ -22,18 +25,18 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
-
-import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -44,6 +47,7 @@ public class RecordService {
 	private final RecordRepository recordRepository;
 	private final HashtagRepository hashtagRepository;
 	private final ImageRepository imageRepository;
+	private final RecordHashtagRepository recordHashtagRepository;
 	private final RecordMapper recordMapper;
 	private final AmazonS3Client s3Client;
 
@@ -74,10 +78,10 @@ public class RecordService {
 			RecordHashtag recordHashtag = RecordHashtag.createRecordHashtag(hashtag);
 			recordHashtags.add(recordHashtag);
 		}
-		Record record = new Record(user, recordRequest, recordHashtags);
-		recordRepository.save(record);
-		saveImage(user, image, record);
-		return new RecordResponse(record.getId());
+		Record savedRecord = new Record(user, recordRequest, recordHashtags);
+		recordRepository.save(savedRecord);
+		saveImage(user, image, savedRecord);
+		return new RecordResponse(savedRecord.getId());
 	}
 
 	@Transactional
@@ -107,9 +111,8 @@ public class RecordService {
 			return;
 
 		String imagePath = uploadStorage(user, image);
-		BufferedImage bufferedImage = ImageIO.read(image.getInputStream());
-		String url = endpoint + "/" + imagePath;
-		Image newImage = new Image(bufferedImage.getWidth(), bufferedImage.getHeight(), url, savedRecord);
+		String url = endpoint + "/" + bucketName + "/" + imagePath;
+		Image newImage = new Image(url, savedRecord);
 		imageRepository.save(newImage);
 	}
 
@@ -137,5 +140,73 @@ public class RecordService {
 
 	public MoodResponse getMoodStatistics(User user, Integer year) {
 		return recordRepository.findMoodTypeByUserAndYear(user, year);
+	}
+
+    public List<RecordJoinResponse> findRecordsAll(User user, LocalDate localDate) {
+
+		Sort sort = Sort.by(
+			Sort.Order.desc("recordDate"),
+			Sort.Order.desc("createdAt")
+		);
+
+		int year = localDate.getYear();
+		int month = localDate.getMonthValue();
+
+		// Record 조회
+		List<Record> recordList = recordRepository.findAllbyRecordDate(user, year, month, sort);
+
+		// Response 객체 변환
+		List<RecordJoinResponse> recordJoinResponseList = new ArrayList<>();
+
+		for (Record record : recordList) {
+			RecordJoinResponse recordJoinResponse = new RecordJoinResponse(record);
+			recordJoinResponseList.add(recordJoinResponse);
+		}
+
+		return recordJoinResponseList;
+	}
+
+	@Transactional
+	public void deleteRecord(User user, Integer recordId) {
+
+		Optional<Record> record = recordRepository.findById(Long.valueOf(recordId));
+
+		if (record.isEmpty()) {
+			throw new RecordNotFoundException();
+		}
+
+		// 1. record_hashtag 삭제
+		if (record.get().getRecordHashtags() != null || !record.get().getRecordHashtags().isEmpty()) {
+			deleteRecordHashtagList(record.get().getRecordHashtags());
+		}
+
+		// 2. image 삭제
+		if (record.get().getImage() != null) {
+			deleteImage(record.get().getImage());
+		}
+
+		// 3. record 삭제
+		record.get().setImage(null);
+		record.get().setRecordHashtags(null);
+		recordRepository.deleteByIdAndUser(record.get().getId(), user);
+	}
+
+	private void deleteRecordHashtagList(List<RecordHashtag> recordHashtagList) {
+		recordHashtagList.stream().forEach(recordHashtag -> {
+			recordHashtag.setRecord(null);
+			recordHashtag.setHashtag(null);
+			recordHashtagRepository.delete(recordHashtag);
+		});
+	}
+
+	private void deleteImage(Image image) {
+		// Storage Image 삭제
+		String objectName = image.getUrl();
+		objectName = objectName.split(endpoint + "/" + bucketName + "/")[1];
+		s3Client.deleteObject(bucketName, objectName);
+
+		// Image 객체 삭제
+		image.setRecord(null);
+		imageRepository.delete(image);
 	}
 }

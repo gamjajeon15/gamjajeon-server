@@ -30,16 +30,8 @@ public class Image extends BaseEntity {
     @Comment("storage url")
     private String url;
 
-    @Comment("이미지 가로 길이")
-    private int width;
-
-    @Comment("이미지 세로 길이")
-    private int height;
-
-    public Image(int width, int height, String url, Record record) {
+    public Image(String url, Record record) {
         this.record = record;
         this.url = url;
-        this.width = width;
-        this.height = height;
     }
 }
