@@ -142,15 +142,11 @@ public class RecordService {
 		return objectName;
 	}
 
-<<<<<<< HEAD
 	public MoodResponse getMoodStatistics(User user, Integer year) {
 		return recordRepository.findMoodTypeByUserAndYear(user, year);
 	}
 
     public List<RecordJoinResponse> findRecordsAll(User user, LocalDate localDate) {
-=======
-	public List<RecordJoinResponse> findRecordsAll(User user, LocalDate localDate) {
->>>>>>> 4f44e1f (fix : coding convention)
 
 		Sort sort = Sort.by(
 			Sort.Order.desc("recordDate"),
