@@ -44,7 +44,7 @@ public class RecordController {
 
 	@DeleteMapping("/{recordId}")
 	public ApiResponse<Object> deleteRecord(@AuthUser CustomUserDetails user,
-		@PathVariable Integer recordId){
+		@PathVariable Integer recordId) {
 		log.info("Record Delete Started with = " + recordId.toString());
 		recordService.deleteRecord(user.getUser(), recordId);
 		return ApiResponse.of(recordId);
