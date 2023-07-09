@@ -47,7 +47,7 @@ public class RecordController {
 	public ApiResponse<Object> getMonthRecords(@AuthUser CustomUserDetails user,
 		@PathVariable String searchDate) {
 		LocalDate localDate = LocalDate.parse(searchDate);
-		log.info("One Month Record Searching Started with = " + localDate.toString());
+		log.info(String.format("One Month Record Searching Started with = %s", localDate.toString()));
 		return ApiResponse.of(recordService.findRecordsAll(user.getUser(), localDate));
 	}
 
