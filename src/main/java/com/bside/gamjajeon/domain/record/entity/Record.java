@@ -62,5 +62,13 @@ public class Record extends BaseEntity {
         this.recordDate = recordRequest.getRecordDate();
     }
 
+    @Builder
+    public Record(User user, RecordRequest recordRequest, List<RecordHashtag> recordHashtags) {
+        this(user, recordRequest);
+        for (RecordHashtag recordHashtag : recordHashtags) {
+            this.addRecordhashtags(recordHashtag);
+        }
+    }
+
 }
 
