@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -16,9 +17,11 @@ import java.time.LocalDate;
 import java.util.List;
 
 @ToString
-@Getter
+@Data
 @NoArgsConstructor
 public class RecordRequest {
+
+	private Long id;
 
 	private String content;
 

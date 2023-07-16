@@ -30,7 +30,7 @@ public class Record extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToOne(mappedBy = "record", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "record", cascade = CascadeType.REMOVE)
     private Image image;
 
     @Comment("포스트 내용")
@@ -55,6 +55,7 @@ public class Record extends BaseEntity {
 
     @Builder
     public Record(User user, RecordRequest recordRequest) {
+        this.id = recordRequest.getId();
         this.user = user;
         this.content = recordRequest.getContent();
         this.moodType = recordRequest.getMoodType();
