@@ -206,7 +206,7 @@ public class RecordService {
 
 
 	private Record deleteRecordRelation(Record record) {
-		if (record.getRecordHashtags() != null || record.getRecordHashtags().isEmpty()) {
+		if (record.getRecordHashtags() != null || !record.getRecordHashtags().isEmpty()) {
 			deleteRecordHashtagList(record.getRecordHashtags());
 			record.setRecordHashtags(null);
 		}

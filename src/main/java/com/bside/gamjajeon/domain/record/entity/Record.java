@@ -30,7 +30,7 @@ public class Record extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToOne(mappedBy = "record")
+    @OneToOne(mappedBy = "record", cascade = CascadeType.REMOVE)
     private Image image;
 
     @Comment("포스트 내용")
