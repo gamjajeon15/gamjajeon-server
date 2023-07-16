@@ -78,6 +78,7 @@ public class RecordService {
 			RecordHashtag recordHashtag = RecordHashtag.createRecordHashtag(hashtag);
 			recordHashtags.add(recordHashtag);
 		}
+
 		Record savedRecord = new Record(user, recordRequest, recordHashtags);
 		recordRepository.save(savedRecord);
 		saveImage(user, image, savedRecord);
@@ -142,7 +143,7 @@ public class RecordService {
 		return recordRepository.findMoodTypeByUserAndYear(user, year);
 	}
 
-    public List<RecordJoinResponse> findRecordsAll(User user, LocalDate localDate) {
+	public List<RecordJoinResponse> findRecordsAll(User user, LocalDate localDate) {
 
 		Sort sort = Sort.by(
 			Sort.Order.desc("recordDate"),
@@ -166,28 +167,21 @@ public class RecordService {
 		return recordJoinResponseList;
 	}
 
+	public RecordJoinResponse findRecord(User user, Integer recordId){
+		return new RecordJoinResponse(recordRepository.findById(Long.valueOf(recordId)).orElseThrow(RecordNotFoundException::new));
+	}
+
 	@Transactional
 	public void deleteRecord(User user, Integer recordId) {
 
 		Optional<Record> record = recordRepository.findById(Long.valueOf(recordId));
 
-		if (record.isEmpty()) {
+		if (record.isEmpty()){
 			throw new RecordNotFoundException();
 		}
 
-		// 1. record_hashtag 삭제
-		if (record.get().getRecordHashtags() != null || !record.get().getRecordHashtags().isEmpty()) {
-			deleteRecordHashtagList(record.get().getRecordHashtags());
-		}
+		deleteRecordRelation(record.get());
 
-		// 2. image 삭제
-		if (record.get().getImage() != null) {
-			deleteImage(record.get().getImage());
-		}
-
-		// 3. record 삭제
-		record.get().setImage(null);
-		record.get().setRecordHashtags(null);
 		recordRepository.deleteByIdAndUser(record.get().getId(), user);
 	}
 
@@ -208,5 +202,37 @@ public class RecordService {
 		// Image 객체 삭제
 		image.setRecord(null);
 		imageRepository.delete(image);
+	}
+
+
+	private Record deleteRecordRelation(Record record) {
+		if (record.getRecordHashtags() != null || record.getRecordHashtags().isEmpty()) {
+			deleteRecordHashtagList(record.getRecordHashtags());
+			record.setRecordHashtags(null);
+		}
+		if (record.getImage() != null) {
+			deleteImage(record.getImage());
+			record.setImage(null);
+		}
+		return record;
+	}
+
+	@Transactional
+	public void updateRecord(User user, Integer recordId, RecordRequest recordRequest,
+		MultipartFile image) throws
+		IOException {
+
+		Optional<Record> record = recordRepository.findById(Long.valueOf(recordId));
+
+		if (record.isEmpty()) {
+			throw new RecordNotFoundException();
+		}
+
+		deleteRecordRelation(record.get());
+
+		recordRequest.setId(record.get().getId());
+
+		save(user, recordRequest, image);
+
 	}
 }

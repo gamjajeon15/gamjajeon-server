@@ -30,7 +30,7 @@ public class Record extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToOne(mappedBy = "record", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "record")
     private Image image;
 
     @Comment("포스트 내용")
@@ -55,18 +55,11 @@ public class Record extends BaseEntity {
 
     @Builder
     public Record(User user, RecordRequest recordRequest) {
+        this.id = recordRequest.getId();
         this.user = user;
         this.content = recordRequest.getContent();
         this.moodType = recordRequest.getMoodType();
         this.recordDate = recordRequest.getRecordDate();
-    }
-
-    @Builder
-    public Record(User user, RecordRequest recordRequest, List<RecordHashtag> recordHashtags) {
-        this(user, recordRequest);
-        for (RecordHashtag recordHashtag : recordHashtags) {
-            this.addRecordhashtags(recordHashtag);
-        }
     }
 
 }

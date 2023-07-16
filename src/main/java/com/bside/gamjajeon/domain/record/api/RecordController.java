@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -62,6 +63,16 @@ public class RecordController {
 		log.info("Record Delete Started with = " + recordId.toString());
 		recordService.deleteRecord(user.getUser(), recordId);
 		return ApiResponse.of(recordId);
+	}
+
+	@PutMapping("/{recordId}")
+	public ApiResponse<Object> updateRecord(@AuthUser CustomUserDetails user,
+		@PathVariable Integer recordId,
+		@Valid @RequestPart("record") RecordRequest recordRequest,
+		@RequestPart(value = "update-file", required = false) MultipartFile multipartFile) throws IOException {
+		log.info("Record Update Started with = " + recordRequest.toString());
+		recordService.updateRecord(user.getUser(), recordId, recordRequest, multipartFile);
+		return ApiResponse.of(recordService.findRecord(user.getUser(), recordId));
 	}
 
 }

@@ -23,7 +23,7 @@ public class Image extends BaseEntity {
     @Column(name = "image_id")
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "record_id")
     private Record record;
 
