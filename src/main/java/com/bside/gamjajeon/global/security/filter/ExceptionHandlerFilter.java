@@ -1,23 +1,27 @@
 package com.bside.gamjajeon.global.security.filter;
 
-import com.bside.gamjajeon.global.dto.ErrorResponse;
-import com.bside.gamjajeon.global.dto.enums.ErrorCode;
-import com.bside.gamjajeon.global.error.GeneralException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
-import io.jsonwebtoken.ExpiredJwtException;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
-import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.stereotype.Component;
-import org.springframework.web.filter.OncePerRequestFilter;
+import java.io.IOException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.bside.gamjajeon.global.dto.ErrorResponse;
+import com.bside.gamjajeon.global.dto.enums.ErrorCode;
+import com.bside.gamjajeon.global.error.GeneralException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.security.SignatureException;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 
 @Slf4j
@@ -37,6 +41,8 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
             setResponse(response, e.getErrorCode());
         } catch (HttpMessageNotReadableException e) {
             setResponse(response, ErrorCode.VALIDATION_ERROR);
+        } catch (SignatureException | MalformedJwtException e) {
+            setResponse(response, ErrorCode.TOKEN_INVALID);
         }
     }
 
