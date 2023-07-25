@@ -36,18 +36,19 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
         try {
             filterChain.doFilter(request, response);
         } catch (ExpiredJwtException e) {
-            setResponse(response, ErrorCode.TOKEN_EXPIRED);
+            setResponse(response, ErrorCode.TOKEN_EXPIRED, true);
         } catch (GeneralException e) {
-            setResponse(response, e.getErrorCode());
+            setResponse(response, e.getErrorCode(), false);
         } catch (HttpMessageNotReadableException e) {
-            setResponse(response, ErrorCode.VALIDATION_ERROR);
+            setResponse(response, ErrorCode.VALIDATION_ERROR, false);
         } catch (SignatureException | MalformedJwtException e) {
-            setResponse(response, ErrorCode.TOKEN_INVALID);
+            setResponse(response, ErrorCode.TOKEN_INVALID, false);
         }
     }
 
-    private void setResponse(HttpServletResponse response, ErrorCode errorCode) throws IOException {
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+    private void setResponse(HttpServletResponse response, ErrorCode errorCode, boolean isTokenExpired) throws IOException {
+        int status = isTokenExpired ? HttpServletResponse.SC_UNAUTHORIZED : HttpServletResponse.SC_BAD_REQUEST;
+        response.setStatus(status);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");
         response.getWriter()
