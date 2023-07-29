@@ -24,7 +24,7 @@ jobs:
 
       - run: echo "👉 Connect ssh and deploy the server"
       - name: Connect ssh
-        uses: applyboy/ssh-action@master
+        uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.HOST }}
           port: ${{ secrets.PORT }}
