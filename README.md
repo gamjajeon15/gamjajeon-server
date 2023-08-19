@@ -19,13 +19,15 @@
 ![Spring Security Badge](https://img.shields.io/badge/Spring%20Security-6DB33F?logo=springsecurity&logoColor=fff&style=flat)
 ![Spring Data JPA](https://img.shields.io/badge/Spring%20Data%20JPA-0078D4?style=flat-square&logo=Spring%20Data%20JPA&logoColor=white&style=flat)
 ![JSON Web Tokens Badge](https://img.shields.io/badge/JSON%20Web%20Tokens-000?logo=jsonwebtokens&logoColor=fff&style=flat)
-![Gradle](https://img.shields.io/badge/gradle-02303A?logo=gradle&logoWidth=25)
+![Gradle](https://img.shields.io/badge/gradle-02303A?logo=gradle)
 ![MySQL](https://img.shields.io/badge/MySQL-2AB1AC?style=flat&logo=MySQL&logoColor=white)
-![Github Actions](https://img.shields.io/badge/Github%20Actions-2AB1AC?style=flat-square&logo=github&logoColor=black&style=flat)
+![Github Actions](https://img.shields.io/badge/Github%20Actions-2AB1AC?style=flat-square&logo=github&logoColor=white&style=flat)
+![NCP Server](https://img.shields.io/badge/NCP%20Server-FC4C02?&style=flat&color=yellow)
+![NCP Object Storage](https://img.shields.io/badge/NCP%20Object%20Storage-FC4C02?&style=flat&color=yellow)
 
 ### ERD
 
-![ERD](https://github.com/gamjajeon15/gamjajeon-server/assets/44048622/7e3bef10-a1ce-496a-91a4-3110498d405d)
+<img src="https://github.com/gamjajeon15/gamjajeon-server/assets/44048622/7e3bef10-a1ce-496a-91a4-3110498d405d" style="width: 70%">
 
 ### API
 [Postman API](https://documenter.getpostman.com/view/7393945/2s93m7X2cK)
