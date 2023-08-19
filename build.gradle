@@ -29,8 +29,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
     // flyway
-    implementation 'org.flywaydb:flyway-core'
-    implementation 'org.flywaydb:flyway-mysql'
+    // implementation 'org.flywaydb:flyway-core'
+    // implementation 'org.flywaydb:flyway-mysql'
 
     // lombok
     compileOnly 'org.projectlombok:lombok'
@@ -48,7 +48,6 @@ dependencies {
 
     // DB
     runtimeOnly 'com.mysql:mysql-connector-j'
-    runtimeOnly 'com.h2database:h2'
 
     // p6spy
     implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.1'

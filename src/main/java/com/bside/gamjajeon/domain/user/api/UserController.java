@@ -2,6 +2,7 @@ package com.bside.gamjajeon.domain.user.api;
 
 import com.bside.gamjajeon.domain.user.dto.request.*;
 import com.bside.gamjajeon.domain.user.dto.response.LoginResponse;
+import com.bside.gamjajeon.domain.user.dto.response.ProfileResponse;
 import com.bside.gamjajeon.domain.user.dto.response.TokenResponse;
 import com.bside.gamjajeon.domain.user.dto.response.UsernameResponse;
 import com.bside.gamjajeon.domain.user.service.TokenService;
@@ -59,6 +60,33 @@ public class UserController {
         log.info("Email Request = " + emailRequest.toString());
         userService.checkEmail(emailRequest);
         return ApiResponse.of("사용 가능한 이메일 주소에요");
+    }
+
+    @PostMapping("/find/username")
+    public ApiResponse<Object> findUsername(@Valid @RequestBody EmailRequest emailRequest) {
+        log.info("Email Request = " + emailRequest.toString());
+        UsernameResponse usernameResponse = userService.findUsername(emailRequest);
+        return ApiResponse.of(usernameResponse);
+    }
+
+    @PatchMapping("/reset/password")
+    public ApiResponse<Object> findUsername(@Valid @RequestBody PasswordRequest passwordRequest,
+                                            @AuthUser CustomUserDetails userDetails) {
+        log.info("Password Request = " + passwordRequest.toString());
+        userService.resetPassword(userDetails.getUser(), passwordRequest);
+        return ApiResponse.empty();
+    }
+
+    @DeleteMapping
+    public ApiResponse<Object> withdraw(@AuthUser CustomUserDetails userDetails) {
+        userService.withdraw(userDetails.getUser());
+        return ApiResponse.empty();
+    }
+
+    @GetMapping("/profile")
+    public ApiResponse<Object> getProfile(@AuthUser CustomUserDetails userDetails) {
+        ProfileResponse profileResponse = userService.getProfile(userDetails.getId());
+        return ApiResponse.of(profileResponse);
     }
 
 }

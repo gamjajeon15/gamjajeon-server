@@ -11,10 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.BindException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import java.util.Objects;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @Slf4j
 @RestControllerAdvice
@@ -58,21 +58,25 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler
+    public ResponseEntity<Object> handleMissingParam(MissingServletRequestParameterException e) {
+        log.error("[MissingServletRequestParameterException] " + e.getMessage());
+        return getResponseEntity(ErrorCode.MISSING_PARAM_ERROR, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Object> handleMethodArgumentMismatch(MethodArgumentTypeMismatchException e) {
+        log.error("[MethodArgumentTypeMismatchException] " + e.getMessage());
+        return getResponseEntity(ErrorCode.MISSING_PARAM_ERROR, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
     public ResponseEntity<Object> exception(Exception e) {
-        log.error("[Error]: " + e.getMessage());
+        log.error(e.toString() + e.getMessage());
         return getResponseEntity(ErrorCode.INTERNAL_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private ResponseEntity<Object> getResponseEntity(ErrorCode errorCode, HttpStatus status) {
         return ResponseEntity.status(status).body(ErrorResponse.of(errorCode));
-    }
-
-    private ResponseEntity<Object> getResponseEntity(GeneralException e, HttpStatus status) {
-        return ResponseEntity.status(status).body(ErrorResponse.of(e));
-    }
-
-    private ResponseEntity<Object> getResponseEntity(ErrorCode errorCode, HttpStatus status, String message) {
-        return ResponseEntity.status(status).body(ErrorResponse.of(errorCode, message));
     }
 
 }

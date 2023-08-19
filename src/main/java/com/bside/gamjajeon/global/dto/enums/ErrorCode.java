@@ -14,6 +14,7 @@ public enum ErrorCode {
     NOT_EXIST_API("C002", ErrorCategory.CLIENT, "요청 주소가 올바르지 않습니다"),
     ACCESS_DENIED("C003", ErrorCategory.CLIENT, "접근 권한이 없습니다"),
     INTERNAL_ERROR("C004", ErrorCategory.SERVER, "서버 에러입니다"),
+    MISSING_PARAM_ERROR("C005", ErrorCategory.CLIENT, "필수 파라미터를 확인해주세요"),
 
     // User
     EMAIL_ALREADY_EXIST("U001", ErrorCategory.CLIENT, "이미 사용 중인 이메일 주소예요"),
@@ -30,7 +31,8 @@ public enum ErrorCode {
     // Record
     RECORD_FORMAT_INVALID("R001", ErrorCategory.CLIENT, "유효한 입력값이 아니예요."),
     DATE_FORMAT_INVALID("R002", ErrorCategory.CLIENT, "날짜 형식이 맞지 않아요.(yyyy-MM-dd)"),
-    RECORD_DATE_INVALID("R003", ErrorCategory.CLIENT, "미래의 날짜는 일기를 작성할 수 없어요.");
+    RECORD_DATE_INVALID("R003", ErrorCategory.CLIENT, "미래의 날짜는 일기를 작성할 수 없어요."),
+    RECORD_NOT_FOUND("R004", ErrorCategory.CLIENT, "유효하지 않은 기록 id예요.");
 
     private final String code;
     private final ErrorCategory errorCategory;
