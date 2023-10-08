@@ -1,7 +1,7 @@
 # 🥔 감자전
 
 <div align="center">
-  <img src="https://github.com/gamjajeon15/gamjajeon-server/assets/44048622/954674ae-fe91-43e8-aaa9-18e1cbca3e06" />
+  <img src="https://github.com/gamjajeon15/gamjajeon-server/assets/44048622/9de71a5b-d2cb-4892-abc7-2d617f76a4bc"/>
 </div>
 
 ## 🔍 서비스 소개
@@ -27,7 +27,7 @@
 
 ### ERD
 
-<img src="https://github.com/gamjajeon15/gamjajeon-server/assets/44048622/7e3bef10-a1ce-496a-91a4-3110498d405d" style="width: 70%">
+<img width="60%" alt="schema" src="https://github.com/gamjajeon15/gamjajeon-server/assets/44048622/a9c1adae-5eec-4de4-882b-e01830c62c25">
 
 ### API
 [Postman API](https://documenter.getpostman.com/view/7393945/2s93m7X2cK)
